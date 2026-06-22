@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, Suspense } from "react";
+import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -78,8 +79,11 @@ function LoginForm() {
             {loading ? "Signing in…" : "Sign in"}
           </button>
         </form>
-        <p className="mt-4 text-center text-xs text-brand-200/80">
-          Accounts are provisioned by your administrator.
+        <p className="mt-4 text-center text-sm text-brand-200">
+          New here?{" "}
+          <Link href="/register" className="font-medium text-white hover:underline">
+            Create an account
+          </Link>
         </p>
       </div>
     </div>

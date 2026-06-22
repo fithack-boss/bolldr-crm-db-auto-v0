@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 // on first run. Safe to re-run: it upserts by unique keys.
 
 async function main() {
-  const adminEmail = (process.env.SEED_ADMIN_EMAIL ?? "admin@bolldr.com").toLowerCase();
+  const adminEmail = (process.env.SEED_ADMIN_EMAIL ?? process.env.ADMIN_EMAIL ?? "jadabboud@bolldr.com").toLowerCase();
   const adminUsername = (process.env.SEED_ADMIN_USERNAME ?? "admin").toLowerCase();
   const adminPassword = process.env.SEED_ADMIN_PASSWORD ?? "ChangeMe!123";
   const adminName = process.env.SEED_ADMIN_NAME ?? "Bolldr Admin";
