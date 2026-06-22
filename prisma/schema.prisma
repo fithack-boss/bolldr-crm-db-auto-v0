@@ -1,0 +1,151 @@
+// Bolldr CRM data model
+// Postgres + Prisma. Run `prisma migrate dev` locally or `prisma migrate deploy`
+// in production (wired into the `build` script for Vercel).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  SALES
+}
+
+// Sales pipeline stages — inspired by the Bolldr CRM structure in Notion.
+enum Stage {
+  NEW
+  CONTACTED
+  QUALIFIED
+  MEETING
+  PROPOSAL
+  NEGOTIATION
+  WON
+  LOST
+}
+
+// Type of logged interaction with a contact.
+enum InteractionType {
+  CALL
+  EMAIL
+  MEETING
+  WHATSAPP
+  NOTE
+  TASK
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  username     String   @unique
+  name         String
+  passwordHash String
+  role         Role     @default(SALES)
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  contacts     Contact[]     @relation("ContactOwner")
+  interactions Interaction[]
+  dailyLogs    DailyLog[]
+  imports      ImportBatch[]
+
+  @@index([role])
+}
+
+// The master CRM table. Every imported / created lead lives here.
+model Contact {
+  id          String   @id @default(cuid())
+  firstName   String
+  lastName    String?
+  company     String?
+  jobTitle    String?
+  email       String?
+  phone       String?
+  source      String? // e.g. CSV import, Website, Referral, Cold call
+  stage       Stage    @default(NEW)
+  dealValue   Float?   @default(0)
+  city        String?
+  country     String?
+  notes       String?
+  // Flexible bag for any extra columns found in imported spreadsheets that
+  // don't map to a first-class field. Keeps the master table lossless.
+  extra       Json?
+
+  ownerId     String?
+  owner       User?    @relation("ContactOwner", fields: [ownerId], references: [id], onDelete: SetNull)
+
+  lastContactedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  interactions Interaction[]
+
+  @@index([ownerId])
+  @@index([stage])
+  @@index([email])
+}
+
+// Every comment / touchpoint the sales team logs against a contact.
+// This is the audit trail of client interactions.
+model Interaction {
+  id              String          @id @default(cuid())
+  contactId       String
+  contact         Contact         @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  userId          String
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type            InteractionType @default(NOTE)
+  body            String
+  durationMinutes Int? // mainly for CALL / MEETING
+  // Optional stage transition recorded alongside the interaction.
+  stageFrom       Stage?
+  stageTo         Stage?
+  createdAt       DateTime        @default(now())
+
+  @@index([contactId])
+  @@index([userId])
+  @@index([type])
+  @@index([createdAt])
+}
+
+// Standardized end-of-day report each sales rep submits.
+model DailyLog {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date            DateTime @db.Date
+  hoursWorked     Float    @default(0)
+  callsMade       Int      @default(0)
+  meetingsHeld    Int      @default(0)
+  emailsSent      Int      @default(0)
+  newContacts     Int      @default(0)
+  dealsWon        Int      @default(0)
+  summary         String? // free-text "what I did today"
+  blockers        String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // One log per rep per day.
+  @@unique([userId, date])
+  @@index([userId])
+  @@index([date])
+}
+
+// Bookkeeping for CSV / Excel uploads done by the admin.
+model ImportBatch {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  filename    String
+  rowsTotal   Int      @default(0)
+  rowsCreated Int      @default(0)
+  rowsUpdated Int      @default(0)
+  rowsSkipped Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+}
