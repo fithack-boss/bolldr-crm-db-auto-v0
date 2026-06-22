@@ -28,15 +28,16 @@ free, open-source tools and designed to deploy on **Vercel** alongside
 | Framework      | Next.js 14 (App Router) + React 18       |
 | Language       | TypeScript                               |
 | Styling        | Tailwind CSS                             |
-| Auth           | Auth.js (NextAuth v4), credentials + JWT |
-| Database       | PostgreSQL via Prisma ORM                |
+| Auth           | Auth.js (NextAuth v4), email + password (JWT) |
+| Database       | Supabase (Postgres) via Prisma ORM       |
 | Charts         | Recharts                                 |
 | Spreadsheets   | SheetJS (`xlsx`) + PapaParse             |
-| Hosting        | Vercel                                   |
+| Hosting        | Vercel (dedicated subdomain, e.g. crm.bolldr.com) |
 
-The database is **not** bundled — pick any free Postgres provider:
-[Neon](https://neon.tech) (recommended), [Supabase](https://supabase.com), or
-**Vercel Postgres** (provisioned from the Vercel dashboard).
+The database is **Supabase** — a free, open-source hosted Postgres. (Supabase
+*is* Postgres, so there's nothing extra to install; you just paste its
+connection strings into the env vars.) Any other Postgres works too, but the
+guide below uses Supabase end to end.
 
 ---
 
@@ -48,7 +49,8 @@ npm install
 
 # 2. Configure environment
 cp .env.example .env
-#   edit .env and set DATABASE_URL + NEXTAUTH_SECRET (generate: openssl rand -base64 32)
+#   edit .env and set DATABASE_URL + DIRECT_URL (from Supabase) and
+#   NEXTAUTH_SECRET (generate: openssl rand -base64 32)
 
 # 3. Create the database schema
 npm run db:push
@@ -60,59 +62,80 @@ npm run db:seed
 npm run dev    # http://localhost:3000
 ```
 
-Default seeded logins (change these via `.env` before seeding in production):
+Default seeded logins — **sign in with the email** (change these via `.env`
+before seeding in production):
 
-| Role  | Username | Password       |
-| ----- | -------- | -------------- |
-| Admin | `admin`  | `ChangeMe!123` |
-| Sales | `sara`   | `password123`  |
-| Sales | `omar`   | `password123`  |
+| Role  | Email              | Password       |
+| ----- | ------------------ | -------------- |
+| Admin | `admin@bolldr.com` | `ChangeMe!123` |
+| Sales | `sara@bolldr.com`  | `password123`  |
+| Sales | `omar@bolldr.com`  | `password123`  |
 
 ---
 
-## Deploying to Vercel (bolldr.com)
+## Deploying to a dedicated URL (crm.bolldr.com) with Supabase
 
-1. **Push this repo to GitHub** (already on the `claude/crm-database-webapp-pu6qa3`
-   branch).
+Because `bolldr.com` already runs your marketing site, the CRM is deployed as a
+**separate Vercel project on its own subdomain** — `crm.bolldr.com` — so it
+doesn't touch your existing site. Your sales team just goes to that URL and signs
+in with their email + password.
 
-2. **Create a free Postgres database**
-   - Easiest: in the Vercel dashboard → *Storage* → *Create Database* → *Postgres*.
-   - Or create one at Neon / Supabase and copy the **pooled** connection string.
+### 1. Create the Supabase database (free)
+1. Sign up at [supabase.com](https://supabase.com) → **New project**. Pick a
+   region close to your team and set a database password (save it).
+2. Once it's ready: **Project Settings → Database → Connection string**. Copy two
+   strings and add your password to each:
+   - **Transaction pooler** (port `6543`) → this is your `DATABASE_URL`
+     (append `?pgbouncer=true&sslmode=require`).
+   - **Session / direct** (port `5432`) → this is your `DIRECT_URL`
+     (append `?sslmode=require`).
 
-3. **Import the project into Vercel** → *Add New… → Project* → pick this repo.
+### 2. Import the repo into Vercel
+**Add New… → Project** → pick this repo. Vercel auto-detects Next.js — no build
+config needed (the `build` script runs `prisma db push`, creating the schema on
+first deploy).
 
-4. **Add environment variables** (Project → Settings → Environment Variables):
+### 3. Add environment variables (Project → Settings → Environment Variables)
 
-   | Name                | Value                                            |
-   | ------------------- | ------------------------------------------------ |
-   | `DATABASE_URL`      | your Postgres pooled connection string           |
-   | `NEXTAUTH_SECRET`   | `openssl rand -base64 32`                         |
-   | `NEXTAUTH_URL`      | `https://bolldr.com` (your production URL)        |
-   | `SEED_ADMIN_EMAIL`  | your admin email                                  |
-   | `SEED_ADMIN_USERNAME` | your admin username                             |
-   | `SEED_ADMIN_PASSWORD` | a strong password                               |
-   | `SEED_ADMIN_NAME`   | your name                                          |
+| Name                  | Value                                                     |
+| --------------------- | --------------------------------------------------------- |
+| `DATABASE_URL`        | Supabase **transaction pooler** string (port 6543)        |
+| `DIRECT_URL`          | Supabase **direct** string (port 5432)                    |
+| `NEXTAUTH_SECRET`     | `openssl rand -base64 32`                                  |
+| `NEXTAUTH_URL`        | `https://crm.bolldr.com`                                   |
+| `SEED_ADMIN_EMAIL`    | your admin email (used to log in)                         |
+| `SEED_ADMIN_PASSWORD` | a strong password                                         |
+| `SEED_ADMIN_NAME`     | your name                                                  |
 
-   (If you use Vercel Postgres, `DATABASE_URL` is added automatically.)
+### 4. Deploy, then create the admin account
+Click **Deploy**. After it succeeds, seed the first admin once from your machine
+(pointing at the prod DB):
 
-5. **Deploy.** The `build` script runs `prisma db push` automatically, so the
-   schema is created on first deploy. No migration step needed.
+```bash
+DIRECT_URL="<your-direct-url>" DATABASE_URL="<your-pooled-url>" \
+  SEED_ADMIN_EMAIL="you@bolldr.com" SEED_ADMIN_PASSWORD="<strong-pass>" \
+  SEED_ADMIN_NAME="Your Name" npm run db:seed
+```
 
-6. **Seed the admin account** once (from your machine, pointing at the prod DB):
+From then on, **add the rest of your sales team from the in-app Team page** — no
+command line needed. Each person logs in with the email + password you set.
 
-   ```bash
-   DATABASE_URL="<prod-url>" npm run db:seed
-   ```
+### 5. Point crm.bolldr.com at the app
+1. In the CRM's Vercel project → **Settings → Domains → Add** → `crm.bolldr.com`.
+2. Vercel shows a DNS record (a `CNAME` for `crm` → `cname.vercel-dns.com`). Add
+   it wherever `bolldr.com`'s DNS is managed (e.g. your registrar / Cloudflare).
+3. Once DNS propagates, `https://crm.bolldr.com` serves the CRM with an automatic
+   SSL certificate. Make sure `NEXTAUTH_URL` matches exactly.
 
-   Or just create the admin through any one-off run — after that, manage all
-   users from the in-app **Team** page.
+### Linking it from your main site
+Add a normal link/button on `bolldr.com` (e.g. a “Team Login” item) pointing to
+`https://crm.bolldr.com`. Because it's a separate subdomain, the two sites stay
+fully independent and nothing on your marketing site changes.
 
-### Pointing bolldr.com at this app
-
-In Vercel → Project → *Settings → Domains*, add `bolldr.com` (and/or
-`crm.bolldr.com`). Update the domain's DNS to the records Vercel shows. If
-`bolldr.com` already hosts a marketing site, deploy the CRM to a subdomain like
-`crm.bolldr.com` instead and set `NEXTAUTH_URL` accordingly.
+> Prefer it under a path like `bolldr.com/crm` instead of a subdomain? That's
+> possible too (Next.js `basePath` + a rewrite from the main site), but a
+> subdomain is simpler, isolates the apps, and works best with the auth cookies —
+> so it's the recommended setup.
 
 ---
 

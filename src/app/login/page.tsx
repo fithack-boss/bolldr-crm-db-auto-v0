@@ -25,7 +25,7 @@ function LoginForm() {
     });
     setLoading(false);
     if (res?.error) {
-      setError("Invalid username or password.");
+      setError("Invalid email or password.");
       return;
     }
     router.push(callbackUrl);
@@ -48,11 +48,14 @@ function LoginForm() {
             <div className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>
           )}
           <div>
-            <label className="label" htmlFor="username">Username or email</label>
+            <label className="label" htmlFor="username">Work email</label>
             <input
               id="username"
               className="input"
-              autoComplete="username"
+              type="email"
+              inputMode="email"
+              autoComplete="email"
+              placeholder="you@bolldr.com"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
