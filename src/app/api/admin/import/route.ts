@@ -34,10 +34,17 @@ export async function POST(req: Request) {
   const filename = (file as File).name || "upload";
   const buffer = Buffer.from(await (file as File).arrayBuffer());
 
-  // SheetJS reads CSV, XLS and XLSX transparently from a buffer.
+  // SheetJS reads CSV, XLS and XLSX. For CSV we decode the bytes as UTF-8
+  // ourselves (passing type:"string"), otherwise SheetJS falls back to a legacy
+  // codepage and mangles accented Spanish headers/values (e.g. "Teléfono" →
+  // "TelÃ©fono"). Binary Excel files carry their own encoding, so read those as
+  // a buffer.
+  const isCsv = /\.csv$/i.test(filename) || (file as File).type === "text/csv";
   let rows: RawRow[];
   try {
-    const wb = XLSX.read(buffer, { type: "buffer" });
+    const wb = isCsv
+      ? XLSX.read(new TextDecoder("utf-8").decode(buffer), { type: "string" })
+      : XLSX.read(buffer, { type: "buffer" });
     const sheet = wb.Sheets[wb.SheetNames[0]];
     if (!sheet) throw new Error("empty workbook");
     rows = XLSX.utils.sheet_to_json<RawRow>(sheet, { defval: "", raw: false });
@@ -62,8 +69,12 @@ export async function POST(req: Request) {
       jobTitle: m.jobTitle || null,
       email: m.email || null,
       phone: m.phone || null,
+      whatsapp: m.whatsapp || null,
+      website: m.website || null,
       source: m.source || "Import",
       stage: m.stage || "NEW",
+      industry: m.industry || null,
+      interests: m.interests ?? [],
       dealValue: m.dealValue ?? 0,
       city: m.city || null,
       country: m.country || null,

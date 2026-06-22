@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { STAGES } from "@/lib/constants";
+import { STAGES, INDUSTRIES, INTERESTS } from "@/lib/constants";
 
 export interface OwnerOption {
   id: string;
@@ -17,8 +17,12 @@ export interface ContactInitial {
   jobTitle?: string | null;
   email?: string | null;
   phone?: string | null;
+  whatsapp?: string | null;
+  website?: string | null;
   source?: string | null;
   stage?: string;
+  industry?: string | null;
+  interests?: string[];
   dealValue?: number | null;
   city?: string | null;
   country?: string | null;
@@ -101,10 +105,27 @@ export function ContactFormDialog({
                   <input name="phone" className="input" defaultValue={initial?.phone ?? ""} />
                 </div>
                 <div>
+                  <label className="label">WhatsApp</label>
+                  <input name="whatsapp" className="input" defaultValue={initial?.whatsapp ?? ""} />
+                </div>
+                <div>
+                  <label className="label">Website</label>
+                  <input name="website" className="input" defaultValue={initial?.website ?? ""} placeholder="https://…" />
+                </div>
+                <div>
                   <label className="label">Stage</label>
                   <select name="stage" className="input" defaultValue={initial?.stage ?? "NEW"}>
                     {STAGES.map((s) => (
                       <option key={s.value} value={s.value}>{s.label}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="label">Industry</label>
+                  <select name="industry" className="input" defaultValue={initial?.industry ?? ""}>
+                    <option value="">—</option>
+                    {INDUSTRIES.map((i) => (
+                      <option key={i} value={i}>{i}</option>
                     ))}
                   </select>
                 </div>
@@ -135,6 +156,27 @@ export function ContactFormDialog({
                     </select>
                   </div>
                 )}
+              </div>
+
+              <div>
+                <label className="label">Interests</label>
+                <div className="flex flex-wrap gap-2">
+                  {INTERESTS.map((i) => (
+                    <label
+                      key={i}
+                      className="flex cursor-pointer items-center gap-1.5 rounded-lg border border-slate-200 px-2.5 py-1 text-sm text-slate-600 hover:bg-slate-50"
+                    >
+                      <input
+                        type="checkbox"
+                        name="interests"
+                        value={i}
+                        defaultChecked={initial?.interests?.includes(i) ?? false}
+                        className="h-3.5 w-3.5 rounded border-slate-300"
+                      />
+                      {i}
+                    </label>
+                  ))}
+                </div>
               </div>
 
               <div>

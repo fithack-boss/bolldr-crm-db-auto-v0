@@ -5,7 +5,9 @@ free, open-source tools and designed to deploy on **Vercel** alongside
 `bolldr.com`.
 
 - 🔐 **Username / password login** with role-based access (Admin vs. Sales Rep)
-- 👥 **Master contacts table** — the single source of truth for every lead
+- 👥 **Master contacts table** — the single source of truth for every lead,
+  with **industry** and **interests** segmentation (the Bolldr CRM verticals
+  and services from Notion)
 - 🎯 **Per-rep assignment** — each sales rep only sees the contacts the admin
   assigns to them
 - 🗣️ **Interaction tracking** — every call, email, meeting, WhatsApp or note is
@@ -125,12 +127,29 @@ In Vercel → Project → *Settings → Domains*, add `bolldr.com` (and/or
 
 ### Importing spreadsheets
 Go to **Import Data** (admin only), choose a `.csv`, `.xls` or `.xlsx` file. The
-first row must be column headers. Headers are normalized and mapped to fields
-(`name`/`full name`, `email`, `phone`, `company`, `job title`, `stage`,
-`value`/`amount`, `city`, `country`, `notes`, …). Any unrecognized columns are
-preserved on each contact under "Imported fields" so nothing is lost. You can
-assign all imported rows to a rep and optionally update existing contacts matched
-by email or phone. A ready-made `sample-contacts.csv` is included to try it out.
+first row must be column headers. Headers are normalized (accent-insensitive) and
+mapped to fields. Both **English and Spanish headers** are recognized, so an
+export of the Bolldr CRM in Notion imports cleanly:
+
+| Spreadsheet column (ES / EN)                   | Maps to                     |
+| ---------------------------------------------- | --------------------------- |
+| Nombre del Cliente / Cliente / Company         | Company (+ display name)    |
+| Industria / Industry / Sector                  | Industry                    |
+| Estado de Llamada / Stage / Status             | Stage                       |
+| Teléfono / Phone · Celular                      | Phone                       |
+| WhatsApp                                        | WhatsApp                    |
+| Página Web / Website / URL                      | Website                     |
+| Intereses / Interests (comma-separated)        | Interests                   |
+| Notas de Llamada / Notes                        | Notes                       |
+| Ciudad / City · País / Country · Valor / Value  | City / Country / Deal value |
+
+`Estado de Llamada` values (`Sin Llamar`, `Contactado ✅`, `No Contestó /
+Devolución ❌`) are translated to pipeline stages automatically. CSVs are decoded
+as UTF-8 so Spanish accents are preserved. Any unrecognized columns (e.g.
+`Resumen del Perfil`, `Responsable`) are preserved on each contact under
+"Imported fields" so nothing is lost. You can assign all imported rows to a rep
+and optionally update existing contacts matched by email or phone. A ready-made
+`sample-contacts.csv` (in the Bolldr column format) is included to try it out.
 
 ### Dashboards & daily logs
 Dashboards aggregate two sources:

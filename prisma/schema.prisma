@@ -66,8 +66,14 @@ model Contact {
   jobTitle    String?
   email       String?
   phone       String?
+  whatsapp    String?
+  website     String?
   source      String? // e.g. CSV import, Website, Referral, Cold call
   stage       Stage    @default(NEW)
+  // Bolldr CRM segmentation (from the Notion structure): the prospect's
+  // vertical and the services they're interested in.
+  industry    String?
+  interests   String[] @default([])
   dealValue   Float?   @default(0)
   city        String?
   country     String?
@@ -87,6 +93,7 @@ model Contact {
 
   @@index([ownerId])
   @@index([stage])
+  @@index([industry])
   @@index([email])
 }
 

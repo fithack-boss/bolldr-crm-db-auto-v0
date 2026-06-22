@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
-import { STAGES } from "@/lib/constants";
+import { STAGES, INDUSTRIES } from "@/lib/constants";
 
 export function ContactsFilterBar({
   owners,
@@ -44,6 +44,16 @@ export function ContactsFilterBar({
         <option value="">All stages</option>
         {STAGES.map((s) => (
           <option key={s.value} value={s.value}>{s.label}</option>
+        ))}
+      </select>
+      <select
+        className="input max-w-[180px]"
+        value={params.get("industry") ?? ""}
+        onChange={(e) => setParam("industry", e.target.value)}
+      >
+        <option value="">All industries</option>
+        {INDUSTRIES.map((i) => (
+          <option key={i} value={i}>{i}</option>
         ))}
       </select>
       {isAdmin && (

@@ -12,6 +12,7 @@ export interface DashboardData {
   pipelineValue: number;
   wonValue: number;
   stageBreakdown: { stage: Stage; label: string; color: string; count: number }[];
+  industryBreakdown: { industry: string; count: number }[];
   // Interaction-derived (real-time logging)
   callsLogged: number;
   meetingsLogged: number;
@@ -49,6 +50,7 @@ export async function getDashboardData(userId: string | null): Promise<Dashboard
   const [
     totalContacts,
     stageGroups,
+    industryGroups,
     valueAgg,
     wonAgg,
     callsLogged,
@@ -61,6 +63,11 @@ export async function getDashboardData(userId: string | null): Promise<Dashboard
     prisma.contact.count({ where: contactWhere }),
     prisma.contact.groupBy({
       by: ["stage"],
+      where: contactWhere,
+      _count: { _all: true },
+    }),
+    prisma.contact.groupBy({
+      by: ["industry"],
       where: contactWhere,
       _count: { _all: true },
     }),
@@ -96,6 +103,10 @@ export async function getDashboardData(userId: string | null): Promise<Dashboard
 
   const countByStage = new Map<string, number>();
   for (const g of stageGroups) countByStage.set(g.stage, g._count._all);
+
+  const industryBreakdown = industryGroups
+    .map((g) => ({ industry: g.industry ?? "Sin industria", count: g._count._all }))
+    .sort((a, b) => b.count - a.count);
 
   const stageBreakdown = STAGES.map((s) => ({
     stage: s.value,
@@ -136,6 +147,7 @@ export async function getDashboardData(userId: string | null): Promise<Dashboard
     pipelineValue: valueAgg._sum.dealValue ?? 0,
     wonValue: wonAgg._sum.dealValue ?? 0,
     stageBreakdown,
+    industryBreakdown,
     callsLogged,
     meetingsLogged,
     totalInteractions,

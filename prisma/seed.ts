@@ -53,30 +53,46 @@ async function main() {
     return;
   }
 
-  const companies = [
-    "Fit Gym Dubai", "PowerHouse Abu Dhabi", "FlexFit Sharjah", "IronWorks JLT",
-    "PulseClub Marina", "Apex Athletics", "Zenith Wellness", "CoreStrength DIFC",
-    "Velocity Sports", "Summit Fitness", "Elevate Studio", "Titan Performance",
+  // Demo prospects mirror the Bolldr CRM verticals (digital-marketing agency).
+  const demoContacts = [
+    { company: "Odontología Soul Dentist", industry: "Odontología", interests: ["Página Web", "Redes Sociales"] },
+    { company: "Centro De Estética Castilla", industry: "Salud y Estética", interests: ["Redes Sociales", "Branding"] },
+    { company: "Fisioterapia Integrativa", industry: "Salud y Estética", interests: ["SEO", "Google Ads"] },
+    { company: "Spa Bienestar Total", industry: "Bienestar y Spa", interests: ["Fotografía", "Video"] },
+    { company: "Pilates Studio Reforma", industry: "Pilates y Fitness", interests: ["Página Web", "Redes Sociales"] },
+    { company: "AJL Abogados", industry: "Contadores", interests: ["Branding", "Consultoría"] },
+    { company: "AIA Arquitectura e Ingeniería", industry: "Inmobiliaria", interests: ["Página Web", "E-Commerce"] },
+    { company: "R3CO Ropa Responsable", industry: "Tecnología", interests: ["E-Commerce", "Google Ads"] },
+    { company: "Centro Cultural La Candelaria", industry: "Centro Cultural", interests: ["Redes Sociales", "Video"] },
+    { company: "Colegio Bilingüe Andino", industry: "Educación", interests: ["Página Web", "SEO"] },
+    { company: "Clínica Dental Sonrisa", industry: "Odontología", interests: ["Automatización IA", "Análisis de Datos"] },
+    { company: "Inmobiliaria Hábitat", industry: "Inmobiliaria", interests: ["Página Web", "Google Ads"] },
   ];
   const stages: Stage[] = ["NEW", "CONTACTED", "QUALIFIED", "MEETING", "PROPOSAL", "NEGOTIATION", "WON", "LOST"];
-  const firstNames = ["Ali", "Layla", "Hassan", "Noor", "Yusuf", "Mariam", "Khalid", "Aisha", "Tariq", "Dana", "Rashid", "Hana"];
+  const firstNames = ["Ana", "Carlos", "Lucía", "Mateo", "Valentina", "Andrés", "Camila", "Sergio", "Paula", "Diego", "Daniela", "Felipe"];
 
-  for (let i = 0; i < companies.length; i++) {
+  for (let i = 0; i < demoContacts.length; i++) {
     const owner = reps[i % reps.length];
     const stage = stages[i % stages.length];
+    const d = demoContacts[i];
+    const phone = `+57 30${(10000000 + i * 13577).toString().slice(0, 8)}`;
     const contact = await prisma.contact.create({
       data: {
         firstName: firstNames[i % firstNames.length],
-        lastName: ["Al Mansoori", "Saleh", "Rahman", "Aziz", "Farooq"][i % 5],
-        company: companies[i],
-        jobTitle: ["Owner", "Operations Manager", "Director", "GM"][i % 4],
-        email: `lead${i + 1}@example.com`,
-        phone: `+9715${(50000000 + i * 13577).toString().slice(0, 8)}`,
+        lastName: ["Gómez", "Rodríguez", "Martínez", "López", "Hernández"][i % 5],
+        company: d.company,
+        jobTitle: ["Propietario", "Gerente", "Director", "Administrador"][i % 4],
+        email: `contacto${i + 1}@example.com`,
+        phone,
+        whatsapp: phone,
+        website: `https://${d.company.toLowerCase().normalize("NFD").replace(/[^a-z]+/g, "")}.co`,
+        industry: d.industry,
+        interests: d.interests,
         source: ["Website", "Referral", "Cold Call", "Event", "CSV Import"][i % 5],
         stage,
-        dealValue: [0, 5000, 12000, 25000, 40000, 60000][i % 6],
-        city: ["Dubai", "Abu Dhabi", "Sharjah"][i % 3],
-        country: "UAE",
+        dealValue: [0, 1500, 3000, 5000, 8000, 12000][i % 6],
+        city: ["Bogotá", "Medellín", "Cali"][i % 3],
+        country: "Colombia",
         ownerId: owner.id,
         lastContactedAt: new Date(Date.now() - i * 86400000),
       },
@@ -92,10 +108,10 @@ async function main() {
           userId: owner.id,
           type: types[(i + j) % types.length],
           body: [
-            "Intro call — interested in annual membership package.",
-            "Sent proposal with corporate pricing tiers.",
-            "Follow-up: waiting on decision from management.",
-            "Discussed onboarding timeline and PT add-ons.",
+            "Llamada inicial — interesados en rediseño de página web.",
+            "Enviada propuesta con paquetes de redes sociales y SEO.",
+            "Seguimiento: esperando decisión de la gerencia.",
+            "Discutimos cronograma de branding y campañas de Google Ads.",
           ][(i + j) % 4],
           durationMinutes: j === 0 ? 15 + (i % 30) : null,
           createdAt: new Date(Date.now() - (i + j) * 43200000),
@@ -103,7 +119,7 @@ async function main() {
       });
     }
   }
-  console.log(`✔ Seeded ${companies.length} demo contacts with interactions.`);
+  console.log(`✔ Seeded ${demoContacts.length} demo contacts with interactions.`);
 
   // Daily logs for the last 5 days for each rep.
   for (const rep of reps) {

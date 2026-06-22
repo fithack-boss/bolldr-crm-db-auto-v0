@@ -4,11 +4,20 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
-import { STAGE_VALUES } from "@/lib/constants";
+import { STAGE_VALUES, INTERESTS } from "@/lib/constants";
 import type { Stage, InteractionType } from "@prisma/client";
 
 const stageEnum = z.enum(STAGE_VALUES as [Stage, ...Stage[]]);
 const typeEnum = z.enum(["CALL", "EMAIL", "MEETING", "WHATSAPP", "NOTE", "TASK"]);
+
+// Interests arrive as repeated form fields; pull and whitelist them.
+function readInterests(formData: FormData): string[] {
+  const allowed = new Set<string>(INTERESTS);
+  return formData
+    .getAll("interests")
+    .map((v) => String(v))
+    .filter((v) => allowed.has(v));
+}
 
 // Ensure the current user is allowed to touch a given contact.
 // Reps may only act on contacts assigned to them; admins on any.
@@ -29,8 +38,11 @@ const createContactSchema = z.object({
   jobTitle: z.string().optional(),
   email: z.string().email().optional().or(z.literal("")),
   phone: z.string().optional(),
+  whatsapp: z.string().optional(),
+  website: z.string().optional(),
   source: z.string().optional(),
   stage: stageEnum.optional(),
+  industry: z.string().optional(),
   dealValue: z.coerce.number().optional(),
   city: z.string().optional(),
   country: z.string().optional(),
@@ -41,6 +53,7 @@ const createContactSchema = z.object({
 export async function createContact(formData: FormData) {
   const user = await requireUser();
   const parsed = createContactSchema.parse(Object.fromEntries(formData));
+  const interests = readInterests(formData);
 
   // Reps can only create contacts assigned to themselves.
   const ownerId = user.role === "ADMIN" ? parsed.ownerId || null : user.id;
@@ -53,8 +66,12 @@ export async function createContact(formData: FormData) {
       jobTitle: parsed.jobTitle || null,
       email: parsed.email || null,
       phone: parsed.phone || null,
+      whatsapp: parsed.whatsapp || null,
+      website: parsed.website || null,
       source: parsed.source || "Manual",
       stage: parsed.stage || "NEW",
+      industry: parsed.industry || null,
+      interests,
       dealValue: parsed.dealValue ?? 0,
       city: parsed.city || null,
       country: parsed.country || null,
@@ -70,6 +87,7 @@ const updateContactSchema = createContactSchema.extend({ id: z.string() });
 export async function updateContact(formData: FormData) {
   const data = updateContactSchema.parse(Object.fromEntries(formData));
   const { user } = await assertCanAccess(data.id);
+  const interests = readInterests(formData);
 
   // Only admins may reassign the owner.
   const ownerId = user.role === "ADMIN" ? data.ownerId || null : undefined;
@@ -83,8 +101,12 @@ export async function updateContact(formData: FormData) {
       jobTitle: data.jobTitle || null,
       email: data.email || null,
       phone: data.phone || null,
+      whatsapp: data.whatsapp || null,
+      website: data.website || null,
       source: data.source || null,
       stage: data.stage,
+      industry: data.industry || null,
+      interests,
       dealValue: data.dealValue ?? 0,
       city: data.city || null,
       country: data.country || null,

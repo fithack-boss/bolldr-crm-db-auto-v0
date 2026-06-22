@@ -56,8 +56,9 @@ export function ImportUploader({ owners }: { owners: { id: string; name: string 
           className="block w-full text-sm text-slate-600 file:mr-4 file:rounded-lg file:border-0 file:bg-brand-600 file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-brand-700"
         />
         <p className="mt-1 text-xs text-slate-400">
-          The first row must contain column headers. Columns are auto-mapped (name, email, phone, company, stage, value…);
-          unrecognized columns are preserved on each contact.
+          The first row must contain column headers. English and Spanish headers are auto-mapped
+          (Nombre del Cliente, Industria, Estado de Llamada, Teléfono, Celular, WhatsApp, Página Web,
+          Intereses, Notas de Llamada…); unrecognized columns are preserved on each contact.
         </p>
       </div>
 

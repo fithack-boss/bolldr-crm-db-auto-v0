@@ -75,6 +75,30 @@ export default async function DashboardPage() {
         </div>
       </div>
 
+      {/* Contacts by industry */}
+      {data.industryBreakdown.length > 0 && (
+        <div className="card p-5">
+          <h2 className="mb-1 text-sm font-semibold text-slate-700">Contacts by Industry</h2>
+          <p className="mb-3 text-xs text-slate-400">Which verticals your pipeline is concentrated in.</p>
+          <ul className="space-y-2">
+            {data.industryBreakdown.map((row) => {
+              const pct = data.totalContacts ? Math.round((row.count / data.totalContacts) * 100) : 0;
+              return (
+                <li key={row.industry} className="flex items-center gap-3">
+                  <span className="w-36 shrink-0 truncate text-sm text-slate-600">{row.industry}</span>
+                  <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-slate-100">
+                    <div className="h-full rounded-full bg-brand-500" style={{ width: `${pct}%` }} />
+                  </div>
+                  <span className="w-16 shrink-0 text-right text-sm tabular-nums text-slate-500">
+                    {row.count} · {pct}%
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
+
       {/* Recent interactions */}
       <div className="card p-5">
         <div className="mb-3 flex items-center justify-between">

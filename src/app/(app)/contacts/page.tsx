@@ -14,7 +14,7 @@ export const dynamic = "force-dynamic";
 export default async function ContactsPage({
   searchParams,
 }: {
-  searchParams: { q?: string; stage?: string; owner?: string };
+  searchParams: { q?: string; stage?: string; owner?: string; industry?: string };
 }) {
   const user = await requireUser();
   const isAdmin = user.role === "ADMIN";
@@ -31,6 +31,10 @@ export default async function ContactsPage({
 
   if (searchParams.stage && STAGE_VALUES.includes(searchParams.stage as Stage)) {
     where.stage = searchParams.stage as Stage;
+  }
+
+  if (searchParams.industry) {
+    where.industry = searchParams.industry;
   }
 
   if (searchParams.q) {
@@ -92,6 +96,7 @@ export default async function ContactsPage({
               <tr>
                 <th className="th">Name</th>
                 <th className="th">Company</th>
+                <th className="th">Industry</th>
                 <th className="th">Stage</th>
                 <th className="th">Value</th>
                 {isAdmin && <th className="th">Owner</th>}
@@ -102,7 +107,7 @@ export default async function ContactsPage({
             <tbody className="divide-y divide-slate-100">
               {contacts.length === 0 ? (
                 <tr>
-                  <td colSpan={isAdmin ? 7 : 6} className="py-10 text-center text-sm text-slate-400">
+                  <td colSpan={isAdmin ? 8 : 7} className="py-10 text-center text-sm text-slate-400">
                     No contacts match your filters.
                   </td>
                 </tr>
@@ -119,6 +124,7 @@ export default async function ContactsPage({
                       <div className="text-slate-700">{c.company || "—"}</div>
                       {c.jobTitle && <div className="text-xs text-slate-400">{c.jobTitle}</div>}
                     </td>
+                    <td className="td text-slate-600">{c.industry || "—"}</td>
                     <td className="td"><StageBadge stage={c.stage} /></td>
                     <td className="td">{formatCurrency(c.dealValue)}</td>
                     {isAdmin && <td className="td">{c.owner?.name ?? <span className="text-slate-400">Unassigned</span>}</td>}

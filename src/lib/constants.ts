@@ -43,3 +43,33 @@ export const ROLE_LABELS: Record<Role, string> = {
   ADMIN: "Administrator",
   SALES: "Sales Rep",
 };
+
+// Prospect verticals — mirrors the "Industria" field in the Bolldr CRM (Notion).
+export const INDUSTRIES = [
+  "Odontología",
+  "Salud y Estética",
+  "Contadores",
+  "Bienestar y Spa",
+  "Pilates y Fitness",
+  "Centro Cultural",
+  "Educación",
+  "Tecnología",
+  "Inmobiliaria",
+  "Otro",
+] as const;
+
+// Services a prospect is interested in — mirrors the "Intereses" multi-select
+// in the Bolldr CRM (Notion).
+export const INTERESTS = [
+  "Página Web",
+  "SEO",
+  "Redes Sociales",
+  "Branding",
+  "Fotografía",
+  "Video",
+  "Google Ads",
+  "E-Commerce",
+  "Automatización IA",
+  "Análisis de Datos",
+  "Consultoría",
+] as const;

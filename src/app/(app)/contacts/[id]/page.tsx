@@ -76,6 +76,17 @@ export default async function ContactDetailPage({ params }: { params: { id: stri
             <dl className="space-y-2 text-sm">
               <Detail label="Email" value={contact.email} href={contact.email ? `mailto:${contact.email}` : undefined} />
               <Detail label="Phone" value={contact.phone} href={contact.phone ? `tel:${contact.phone}` : undefined} />
+              <Detail
+                label="WhatsApp"
+                value={contact.whatsapp}
+                href={contact.whatsapp ? `https://wa.me/${contact.whatsapp.replace(/[^0-9]/g, "")}` : undefined}
+              />
+              <Detail
+                label="Website"
+                value={contact.website}
+                href={contact.website ? (contact.website.startsWith("http") ? contact.website : `https://${contact.website}`) : undefined}
+              />
+              <Detail label="Industry" value={contact.industry} />
               <Detail label="Deal value" value={formatCurrency(contact.dealValue)} />
               <Detail label="Source" value={contact.source} />
               <Detail label="Location" value={[contact.city, contact.country].filter(Boolean).join(", ") || null} />
@@ -83,6 +94,16 @@ export default async function ContactDetailPage({ params }: { params: { id: stri
               <Detail label="Created" value={formatDateTime(contact.createdAt)} />
               <Detail label="Last contact" value={contact.lastContactedAt ? relativeTime(contact.lastContactedAt) : "Never"} />
             </dl>
+            {contact.interests.length > 0 && (
+              <div className="mt-4 border-t border-slate-100 pt-3">
+                <div className="mb-1.5 text-xs font-medium uppercase tracking-wide text-slate-400">Interests</div>
+                <div className="flex flex-wrap gap-1.5">
+                  {contact.interests.map((it) => (
+                    <span key={it} className="badge bg-brand-50 text-brand-700">{it}</span>
+                  ))}
+                </div>
+              </div>
+            )}
             {contact.notes && (
               <div className="mt-4 border-t border-slate-100 pt-3">
                 <div className="text-xs font-medium uppercase tracking-wide text-slate-400">Notes</div>
