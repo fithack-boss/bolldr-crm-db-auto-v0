@@ -19,16 +19,24 @@ export interface DailyLogValues {
 
 export function DailyLogForm({ existing }: { existing?: DailyLogValues | null }) {
   const [saved, setSaved] = useState(false);
+  const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const router = useRouter();
 
   async function onSubmit(formData: FormData) {
     setSubmitting(true);
     setSaved(false);
+    setError("");
     try {
-      await submitDailyLog(formData);
+      const result = await submitDailyLog(formData);
+      if (result?.error) {
+        setError(result.error);
+        return;
+      }
       setSaved(true);
       router.refresh();
+    } catch {
+      setError("Something went wrong saving your log. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -67,6 +75,10 @@ export function DailyLogForm({ existing }: { existing?: DailyLogValues | null })
           defaultValue={existing?.blockers ?? ""}
         />
       </div>
+
+      {error && (
+        <div className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</div>
+      )}
 
       <div className="flex items-center gap-3">
         <button type="submit" className="btn-primary" disabled={submitting}>
