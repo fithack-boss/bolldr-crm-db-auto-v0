@@ -1,0 +1,37 @@
+name: Bundle prototype images
+on:
+  push:
+    branches: [claude/ella-nails-spa-prototype-f5trnw]
+    paths: ['.github/workflows/bundle-prototype-images.yml']
+  workflow_dispatch: {}
+permissions:
+  contents: write
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download images and rewrite HTML to local paths
+        working-directory: prototypes/ella-nails-studio
+        run: |
+          mkdir -p images
+          BASE="https://d8j0ntlcm91z4.cloudfront.net/user_3G38yzRIb87LHUya2UEIE54TBDh"
+          dl() { curl -fsSL --retry 3 "$BASE/$1" -o "images/$2" && sed -i "s|$BASE/$1|images/$2|g" index.html; }
+          dl hf_20260718_085239_b07b2f7e-49b8-4e79-aba4-074fc59da83f.png hero-1.png
+          dl hf_20260718_085241_aeebdbfc-ff67-4384-b72d-c761ae3316e4.png hero-2.png
+          dl hf_20260718_085243_f37873ba-9839-4f3b-ab01-aa2969396e24.png hero-3.png
+          dl hf_20260718_085244_b3731466-dc3f-4cc7-b9fb-606c143d6b50.png hero-4.png
+          dl hf_20260718_085255_c63e8845-b394-4bf3-83bb-0a611ae15a46.png galeria-1.png
+          dl hf_20260718_085257_67a6afef-66b8-42ac-a462-5d380fe7ff13.png galeria-2.png
+          dl hf_20260718_085259_860db737-a0d9-4986-ac1a-3eefc6f9130f.png galeria-3.png
+          dl hf_20260718_085301_7f0d4485-e62a-4dab-9c1e-30108b039bf7.png galeria-4.png
+          dl hf_20260718_085303_6b6558bb-3fea-4795-b3a4-118698809208.png galeria-5.png
+          dl hf_20260718_085544_ceb4baf2-6336-4b73-9450-d8077b6fe87a.png galeria-6.png
+          dl hf_20260718_085307_1e218b5a-f2eb-4e62-9362-87f267786cbe.png galeria-7.png
+          dl hf_20260718_085415_31276376-becd-4176-9d1b-5cc546c89ebb.png galeria-8.png
+      - name: Commit bundled images
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add prototypes/ella-nails-studio
+          git commit -m "Bundle prototype images locally" && git push || echo "nothing to commit"
