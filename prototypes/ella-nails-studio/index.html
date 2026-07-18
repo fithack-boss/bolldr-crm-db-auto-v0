@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+<!-- ============================================================
+  ELLA NAILS STUDIO — prototipo genérico de nail spa (Bogotá)
+  ------------------------------------------------------------
+  HOW TO REBRAND IN MINUTES:
+  1. NAME  → search & replace "Ella Nails Studio" (and "Ella" in
+             the logo monogram just below the <body> tag).
+  2. COLORS→ edit the CSS variables in :root (top of <style>).
+  3. LOGO  → replace the inline SVG inside <a class="logo">.
+  4. PHOTOS→ every <img> and hero slide has a numbered comment
+             ("SWAP PHOTO ...") — replace the URL, keep the tag.
+  5. WHATSAPP → search & replace "573001234567" (number) and
+             "300 123 4567" (display text).
+  6. ADDRESS → search "SWAP ADDRESS" (text + map iframe).
+  No build step. Single file. Ready for Vercel/Netlify.
+============================================================ -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ella Nails Studio — Nail spa en Bogotá · Reserva tu cita</title>
+<meta name="description" content="Manicure, pedicure, semipermanente, uñas acrílicas y nail art en Bogotá. Reserva tu cita en línea y te confirmamos por WhatsApp.">
+<meta property="og:title" content="Ella Nails Studio — Nail spa en Bogotá">
+<meta property="og:description" content="Uñas que hablan por ti. Reserva tu cita en línea, sin pagos anticipados.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 6c8 12 16 20 16 32a16 16 0 1 1-32 0C16 26 24 18 32 6z' fill='%23E0407E'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- FONTS: Fraunces (serif titulares) + Figtree (sans cuerpo). Swap here if the brand uses other faces. -->
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..700,100;1,9..144,400..700,100&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ==========================================================
+   1. BRAND TOKENS — edit these to rebrand the whole site
+   ========================================================== */
+:root{
+  /* Palette (soft blush/nude + one vivid accent) */
+  --bg:        #FFF8F4;   /* page background — blush white        */
+  --blush:     #F6E1D9;   /* soft blush panels                    */
+  --nude:      #E9CDC0;   /* deeper nude — borders, shapes        */
+  --ink:       #43302B;   /* warm cocoa text (instead of black)   */
+  --ink-soft:  #86685E;   /* secondary text                       */
+  --accent:    #E0407E;   /* VIVID accent — raspberry polish      */
+  --accent-dk: #C22E67;   /* accent hover                         */
+  --gold:      #D9A441;   /* stars & small highlights             */
+  --card:      #FFFFFF;   /* cards                                */
+  --whatsapp:  #25D366;   /* keep — recognizable WhatsApp green   */
+
+  /* Type */
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body:    "Figtree", "Segoe UI", system-ui, sans-serif;
+
+  /* Shape & rhythm */
+  --radius:    26px;
+  --radius-sm: 14px;
+  --shadow:    0 18px 45px -18px rgba(67,48,43,.22);
+  --shadow-lg: 0 30px 70px -25px rgba(67,48,43,.35);
+  --maxw:      1120px;
+}
+
+/* ==========================================================
+   2. BASE
+   ========================================================== */
+*,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+html{ scroll-behavior:smooth; }
+body{
+  font-family:var(--font-body);
+  color:var(--ink);
+  background:var(--bg);
+  line-height:1.6;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+img{ max-width:100%; display:block; }
+a{ color:inherit; }
+h1,h2,h3{ font-family:var(--font-display); font-weight:600; line-height:1.15; }
+.wrap{ width:min(var(--maxw), calc(100% - 2.5rem)); margin-inline:auto; }
+section{ padding:5.5rem 0; }
+
+.eyebrow{
+  display:inline-flex; align-items:center; gap:.5rem;
+  font-size:.78rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--accent); margin-bottom:1rem;
+}
+.eyebrow::before{
+  content:""; width:26px; height:2px; border-radius:2px; background:var(--accent);
+}
+.section-title{ font-size:clamp(1.9rem, 4vw, 2.7rem); margin-bottom:.7rem; }
+.section-sub{ color:var(--ink-soft); max-width:56ch; }
+
+/* Buttons */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
+  font-family:var(--font-body); font-weight:600; font-size:1rem;
+  padding:.85rem 1.7rem; border-radius:999px; border:0; cursor:pointer;
+  text-decoration:none; transition:transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .25s, background .2s;
+}
+.btn-primary{ background:var(--accent); color:#fff; box-shadow:0 12px 26px -12px var(--accent); }
+.btn-primary:hover{ background:var(--accent-dk); transform:translateY(-2px) scale(1.03); }
+.btn-ghost{ background:transparent; color:var(--ink); border:1.5px solid var(--nude); }
+.btn-ghost:hover{ border-color:var(--accent); color:var(--accent); transform:translateY(-2px); }
+.btn:active{ transform:scale(.97); }
+.btn:focus-visible, a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible{
+  outline:3px solid var(--accent); outline-offset:2px;
+}
+
+/* Scroll-reveal */
+.reveal{ opacity:0; transform:translateY(26px); transition:opacity .7s ease, transform .7s ease; }
+.reveal.is-visible{ opacity:1; transform:none; }
+
+/* ==========================================================
+   3. HEADER
+   ========================================================== */
+.site-header{
+  position:sticky; top:0; z-index:60;
+  background:color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid color-mix(in srgb, var(--nude) 55%, transparent);
+}
+.site-header .wrap{ display:flex; align-items:center; gap:1.5rem; padding-block:.8rem; }
+.logo{ display:flex; align-items:center; gap:.65rem; text-decoration:none; }
+.logo-mark{ width:42px; height:42px; flex:none; }
+.logo-name{ font-family:var(--font-display); font-size:1.22rem; font-weight:600; letter-spacing:.01em; }
+.logo-name em{ font-style:italic; color:var(--accent); }
+.main-nav{ margin-left:auto; display:flex; align-items:center; gap:1.6rem; }
+.main-nav a:not(.btn){
+  text-decoration:none; font-weight:500; font-size:.95rem; color:var(--ink-soft);
+  transition:color .2s;
+}
+.main-nav a:not(.btn):hover{ color:var(--accent); }
+.main-nav .btn{ padding:.6rem 1.3rem; font-size:.92rem; }
+@media (max-width:760px){ .main-nav a:not(.btn){ display:none; } }
+@media (max-width:480px){
+  .site-header .wrap{ gap:.8rem; }
+  .logo-mark{ width:34px; height:34px; }
+  .logo-name{ font-size:1.02rem; }
+  .main-nav .btn{ padding:.55rem 1rem; font-size:.85rem; }
+}
+
+/* ==========================================================
+   4. HERO — 3D card carousel
+   ========================================================== */
+.hero{
+  position:relative; padding:3.2rem 0 0; overflow:hidden;
+  touch-action:pan-y; /* horizontal swipes control the slider; vertical scroll stays native */
+  background:
+    radial-gradient(720px 460px at 12% -8%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 70%),
+    radial-gradient(900px 560px at 105% 8%, var(--blush), transparent 72%),
+    var(--bg);
+}
+.hero-blob{
+  position:absolute; border-radius:46% 54% 58% 42% / 52% 44% 56% 48%;
+  filter:blur(2px); opacity:.55; pointer-events:none;
+  animation:drift 14s ease-in-out infinite alternate;
+}
+.hero-blob.b1{ width:340px; height:340px; left:-120px; bottom:6%; background:var(--blush); }
+.hero-blob.b2{ width:220px; height:220px; right:-70px; top:16%; background:color-mix(in srgb, var(--accent) 16%, var(--bg)); animation-delay:-6s; }
+@keyframes drift{
+  from{ transform:translateY(0) rotate(0deg); }
+  to  { transform:translateY(-26px) rotate(9deg); }
+}
+
+.hero-head{ text-align:center; position:relative; z-index:2; }
+.hero-head .eyebrow{ justify-content:center; }
+.hero-head .eyebrow::after{ content:""; width:26px; height:2px; border-radius:2px; background:var(--accent); }
+.hero-title{ font-size:clamp(2.1rem, 5vw, 3.3rem); font-weight:600; }
+.hero-title em{ font-style:italic; color:var(--accent); }
+.hero-sub{ color:var(--ink-soft); margin-top:.6rem; font-size:1.05rem; }
+
+/* 3D stage */
+.stage-wrap{
+  position:relative; z-index:2;
+  perspective:1300px;
+  height:min(480px, 62vw);
+  margin-top:2.4rem;
+}
+.stage{
+  position:absolute; inset:0;
+  transform-style:preserve-3d;
+  transform:rotateX(var(--tiltX,0deg)) rotateY(var(--tiltY,0deg));
+  transition:transform .45s ease-out;
+}
+.slide{
+  position:absolute; left:50%; top:50%;
+  width:min(760px, 88vw); height:min(430px, 56vw);
+  border-radius:var(--radius);
+  overflow:hidden;
+  transform:translate(-50%,-50%) translateZ(-460px) scale(.85);
+  opacity:0; z-index:1;
+  transition:transform .8s cubic-bezier(.22,.9,.3,1), opacity .8s ease;
+  box-shadow:var(--shadow-lg);
+  cursor:pointer;
+  user-select:none;
+  -webkit-user-drag:none;
+  background:var(--nude); /* shows while the photo loads / if it fails */
+}
+.slide.is-active{ transform:translate(-50%,-50%) translateZ(0); opacity:1; z-index:4; cursor:default; }
+.slide.is-right { transform:translate(-50%,-50%) translateX(56%) translateZ(-300px) rotateY(-26deg); opacity:.85; z-index:3; }
+.slide.is-left  { transform:translate(-50%,-50%) translateX(-56%) translateZ(-300px) rotateY(26deg); opacity:.85; z-index:3; }
+.slide.is-back  { pointer-events:none; }
+
+.slide-media{
+  position:absolute; inset:0;
+  background-size:cover; background-position:center;
+  transform:scale(1.06);
+  transition:transform 6s ease;
+}
+.slide.is-active .slide-media{ transform:scale(1); }
+.slide-shade{
+  position:absolute; inset:0;
+  background:linear-gradient(76deg, rgba(45,26,30,.78) 8%, rgba(45,26,30,.35) 52%, rgba(45,26,30,.05) 85%);
+}
+.slide-content{
+  position:absolute; inset:0; z-index:2;
+  display:flex; flex-direction:column; justify-content:center;
+  padding:clamp(1.4rem, 5vw, 3.4rem);
+  color:#fff; max-width:34rem;
+}
+.slide-tag{
+  font-size:.72rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase;
+  color:#FBD3E2; margin-bottom:.8rem;
+}
+.slide-content h2{
+  font-size:clamp(1.5rem, 3.6vw, 2.6rem); font-weight:600; line-height:1.12;
+  margin-bottom:1.4rem; text-wrap:balance;
+}
+.slide-content h2 em{ font-style:italic; color:#FBD3E2; }
+.slide .btn{ align-self:flex-start; }
+.slide:not(.is-active) .slide-content{ opacity:.0; transition:opacity .4s; }
+.slide.is-active .slide-content{ opacity:1; transition:opacity .6s .25s; }
+
+/* Controls */
+.hero-controls{
+  position:relative; z-index:5;
+  display:flex; align-items:center; justify-content:center; gap:1.1rem;
+  padding:1.6rem 0 2.6rem;
+}
+.ctrl-arrow{
+  width:46px; height:46px; border-radius:50%;
+  border:1.5px solid var(--nude); background:var(--card); color:var(--ink);
+  display:grid; place-items:center; cursor:pointer; font-size:1.05rem;
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1), border-color .2s, color .2s;
+}
+.ctrl-arrow:hover{ border-color:var(--accent); color:var(--accent); transform:scale(1.1); }
+.dots{ display:flex; gap:.55rem; }
+.dot{
+  width:10px; height:10px; border-radius:50%; border:0; cursor:pointer;
+  background:var(--nude); transition:width .3s, background .3s;
+}
+.dot.is-active{ width:30px; border-radius:999px; background:var(--accent); }
+
+/* drip edge into next section (signature detail) */
+.drip{ display:block; width:100%; height:54px; margin-top:-1px; color:var(--bg); }
+
+/* ==========================================================
+   5. SERVICES
+   ========================================================== */
+#servicios{ padding-top:4.2rem; }
+.services-grid{
+  display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
+  gap:1.4rem; margin-top:2.6rem;
+}
+.service-card{
+  background:var(--card); border-radius:var(--radius); padding:1.8rem 1.7rem 1.5rem;
+  border:1.5px solid color-mix(in srgb, var(--nude) 55%, transparent);
+  box-shadow:var(--shadow);
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1), border-color .3s;
+}
+.service-card:hover{ transform:translateY(-6px); border-color:var(--accent); }
+.service-icon{
+  width:52px; height:52px; border-radius:16px;
+  background:color-mix(in srgb, var(--accent) 10%, var(--blush));
+  display:grid; place-items:center; margin-bottom:1rem; color:var(--accent);
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1);
+}
+.service-card:hover .service-icon{ transform:rotate(-8deg) scale(1.08); }
+.service-card h3{ font-size:1.3rem; margin-bottom:.2rem; }
+.service-note{ font-size:.85rem; color:var(--ink-soft); margin-bottom:1rem; }
+.price-list{ list-style:none; }
+.price-list li{
+  display:flex; align-items:baseline; gap:.6rem;
+  padding:.5rem 0; font-size:.95rem;
+  border-top:1px dashed color-mix(in srgb, var(--nude) 70%, transparent);
+}
+.price-list li:first-child{ border-top:0; }
+.price-list .dots-fill{ flex:1; border-bottom:2px dotted var(--nude); transform:translateY(-4px); }
+.price{ font-weight:700; color:var(--accent); white-space:nowrap; font-variant-numeric:tabular-nums; }
+.services-cta{ text-align:center; margin-top:2.4rem; color:var(--ink-soft); font-size:.95rem; }
+.services-cta a{ color:var(--accent); font-weight:600; }
+
+/* ==========================================================
+   6. GALLERY
+   ========================================================== */
+#galeria{ background:linear-gradient(180deg, var(--bg), var(--blush) 140%); }
+.gallery-grid{
+  display:grid; gap:1rem; margin-top:2.6rem;
+  grid-template-columns:repeat(4, 1fr);
+  grid-auto-rows:200px;
+}
+.shot{
+  position:relative; border-radius:var(--radius-sm); overflow:hidden; margin:0;
+  /* branded placeholder shows while loading or if a photo URL dies */
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 8c7 10 13 17 13 27a13 13 0 1 1-26 0C19 25 25 18 32 8z' fill='%23E9CDC0'/%3E%3C/svg%3E") center/58px no-repeat,
+    linear-gradient(150deg, var(--blush), var(--nude));
+}
+.shot img{
+  width:100%; height:100%; object-fit:cover;
+  transition:transform .6s ease;
+}
+.shot:hover img{ transform:scale(1.06); }
+.shot.tall{ grid-row:span 2; }
+.shot.wide{ grid-column:span 2; }
+.shot figcaption{
+  position:absolute; left:.8rem; bottom:.8rem; z-index:2;
+  background:rgba(255,255,255,.9); color:var(--ink);
+  font-size:.72rem; font-weight:600; letter-spacing:.06em;
+  padding:.28rem .7rem; border-radius:999px;
+  opacity:0; transform:translateY(6px); transition:.3s;
+}
+.shot:hover figcaption{ opacity:1; transform:none; }
+@media (max-width:860px){
+  .gallery-grid{ grid-template-columns:repeat(2, 1fr); grid-auto-rows:160px; }
+}
+
+/* ==========================================================
+   7. TESTIMONIALS
+   ========================================================== */
+.rating-hero{ display:flex; align-items:center; gap:1rem; margin-top:1.4rem; flex-wrap:wrap; }
+.rating-num{ font-family:var(--font-display); font-size:3rem; font-weight:700; line-height:1; }
+.stars{ display:flex; gap:.2rem; color:var(--gold); }
+.stars svg{ width:22px; height:22px; }
+.is-visible .stars svg{ animation:starpop .5s cubic-bezier(.34,1.56,.64,1) backwards; }
+.is-visible .stars svg:nth-child(2){ animation-delay:.08s; }
+.is-visible .stars svg:nth-child(3){ animation-delay:.16s; }
+.is-visible .stars svg:nth-child(4){ animation-delay:.24s; }
+.is-visible .stars svg:nth-child(5){ animation-delay:.32s; }
+@keyframes starpop{ from{ transform:scale(0) rotate(-30deg); } }
+.rating-meta{ font-size:.85rem; color:var(--ink-soft); }
+.testimonial-grid{
+  display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+  gap:1.4rem; margin-top:2.4rem;
+}
+.testimonial{
+  background:var(--card); border-radius:var(--radius); padding:1.8rem;
+  box-shadow:var(--shadow); position:relative;
+  border:1.5px solid color-mix(in srgb, var(--nude) 45%, transparent);
+}
+.testimonial::before{
+  content:"“"; position:absolute; top:.4rem; right:1.2rem;
+  font-family:var(--font-display); font-size:4.6rem; line-height:1;
+  color:color-mix(in srgb, var(--accent) 22%, transparent);
+}
+.testimonial .stars svg{ width:15px; height:15px; }
+.testimonial p{ margin:.9rem 0 1.2rem; font-size:.98rem; }
+.t-author{ display:flex; align-items:center; gap:.75rem; }
+.t-avatar{
+  width:42px; height:42px; border-radius:50%; flex:none;
+  display:grid; place-items:center; color:#fff; font-weight:700; font-size:.95rem;
+  background:linear-gradient(135deg, var(--accent), var(--accent-dk));
+}
+.t-name{ font-weight:700; font-size:.92rem; line-height:1.2; }
+.t-service{ font-size:.78rem; color:var(--ink-soft); }
+
+/* ==========================================================
+   8. BOOKING
+   ========================================================== */
+#reserva{
+  background:
+    radial-gradient(640px 420px at 108% 115%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 70%),
+    var(--blush);
+}
+.booking-grid{
+  display:grid; grid-template-columns:.9fr 1.1fr; gap:2.6rem; align-items:start; margin-top:2.4rem;
+}
+@media (max-width:900px){ .booking-grid{ grid-template-columns:1fr; } }
+.booking-steps{ list-style:none; display:grid; gap:1.1rem; margin-top:1.6rem; }
+.booking-steps li{ display:flex; gap:.9rem; align-items:flex-start; }
+.step-dot{
+  width:34px; height:34px; border-radius:50%; flex:none;
+  background:var(--card); color:var(--accent); font-weight:700;
+  display:grid; place-items:center; box-shadow:var(--shadow);
+  font-size:.9rem;
+}
+.booking-steps b{ display:block; }
+.booking-steps span{ color:var(--ink-soft); font-size:.92rem; }
+.no-pay-note{
+  margin-top:1.8rem; padding:1rem 1.2rem; border-radius:var(--radius-sm);
+  background:color-mix(in srgb, var(--card) 75%, transparent);
+  border:1.5px dashed var(--accent);
+  font-size:.92rem;
+}
+
+.booking-form{
+  background:var(--card); border-radius:var(--radius); padding:2rem;
+  box-shadow:var(--shadow-lg);
+}
+.field{ margin-bottom:1.2rem; }
+.field label{ display:block; font-weight:600; font-size:.88rem; margin-bottom:.4rem; }
+.field input, .field select{
+  width:100%; padding:.8rem 1rem; font:inherit; color:var(--ink);
+  border:1.5px solid var(--nude); border-radius:var(--radius-sm);
+  background:var(--bg); transition:border-color .2s;
+}
+.field input:focus, .field select:focus{ border-color:var(--accent); outline:none; }
+.field-row{ display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+@media (max-width:560px){ .field-row{ grid-template-columns:1fr; } }
+.phone-wrap{ display:flex; }
+.phone-prefix{
+  display:flex; align-items:center; padding:0 .9rem; font-weight:600; color:var(--ink-soft);
+  border:1.5px solid var(--nude); border-right:0; border-radius:var(--radius-sm) 0 0 var(--radius-sm);
+  background:var(--blush); white-space:nowrap;
+}
+.phone-wrap input{ border-radius:0 var(--radius-sm) var(--radius-sm) 0; }
+.slots{ display:flex; flex-wrap:wrap; gap:.55rem; }
+.slot{ position:relative; }
+.slot input{ position:absolute; opacity:0; inset:0; cursor:pointer; }
+.slot span{
+  display:inline-block; padding:.5rem 1rem; border-radius:999px; font-size:.9rem; font-weight:600;
+  border:1.5px solid var(--nude); background:var(--bg); cursor:pointer;
+  transition:all .2s;
+}
+.slot input:checked + span{ background:var(--accent); border-color:var(--accent); color:#fff; transform:scale(1.05); }
+.slot input:focus-visible + span{ outline:3px solid var(--accent); outline-offset:2px; }
+.slot:hover span{ border-color:var(--accent); }
+.booking-form .btn{ width:100%; margin-top:.4rem; font-size:1.05rem; padding:1rem; }
+.form-hint{ text-align:center; font-size:.8rem; color:var(--ink-soft); margin-top:.8rem; }
+
+/* Confirmation state */
+.confirmation{ text-align:center; padding:1.5rem 0; }
+.confirmation.hidden, .booking-form.hidden{ display:none; }
+.check-ring{
+  width:86px; height:86px; margin:0 auto 1.4rem; border-radius:50%;
+  background:color-mix(in srgb, var(--whatsapp) 14%, #fff);
+  display:grid; place-items:center; color:var(--whatsapp);
+  animation:starpop .6s cubic-bezier(.34,1.56,.64,1);
+}
+.confirmation h3{ font-size:1.6rem; margin-bottom:.6rem; }
+.confirmation p{ color:var(--ink-soft); max-width:40ch; margin:0 auto 1rem; }
+.confirmation .resumen{
+  display:inline-block; background:var(--bg); border:1.5px solid var(--nude);
+  border-radius:var(--radius-sm); padding:.8rem 1.4rem; margin-bottom:1.4rem;
+  font-size:.95rem; text-align:left;
+}
+.btn-wa{ background:var(--whatsapp); color:#fff; box-shadow:0 12px 26px -12px var(--whatsapp); }
+.btn-wa:hover{ background:#1eb85a; transform:translateY(-2px) scale(1.03); }
+
+/* ==========================================================
+   9. HOURS + LOCATION
+   ========================================================== */
+.contact-grid{
+  display:grid; grid-template-columns:1fr 1.2fr; gap:1.6rem; margin-top:2.4rem; align-items:stretch;
+}
+@media (max-width:860px){ .contact-grid{ grid-template-columns:1fr; } }
+.info-card{
+  background:var(--card); border-radius:var(--radius); padding:1.9rem;
+  box-shadow:var(--shadow); border:1.5px solid color-mix(in srgb, var(--nude) 45%, transparent);
+}
+.info-card h3{ font-size:1.25rem; margin-bottom:1rem; display:flex; align-items:center; gap:.55rem; }
+.info-card h3 svg{ color:var(--accent); }
+.hours-table{ width:100%; border-collapse:collapse; font-size:.95rem; }
+.hours-table td{ padding:.55rem 0; border-bottom:1px dashed color-mix(in srgb, var(--nude) 70%, transparent); }
+.hours-table tr:last-child td{ border-bottom:0; }
+.hours-table td:last-child{ text-align:right; font-weight:600; white-space:nowrap; }
+.today-tag{
+  display:inline-block; margin-left:.5rem; font-size:.68rem; font-weight:700;
+  background:var(--accent); color:#fff; border-radius:999px; padding:.1rem .55rem;
+  vertical-align:middle; letter-spacing:.05em;
+}
+.address{ font-style:normal; color:var(--ink-soft); font-size:.95rem; margin-bottom:1.1rem; }
+.address b{ color:var(--ink); }
+.map-frame{
+  border:0; width:100%; height:100%; min-height:300px; border-radius:var(--radius);
+  filter:saturate(.85); box-shadow:var(--shadow);
+}
+
+/* ==========================================================
+   10. FOOTER
+   ========================================================== */
+.site-footer{
+  margin-top:3rem; background:var(--ink); color:#EFE2DB;
+  border-radius:var(--radius) var(--radius) 0 0;
+}
+.footer-grid{
+  display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:2rem; padding:3.4rem 0 2.4rem;
+}
+@media (max-width:760px){ .footer-grid{ grid-template-columns:1fr; gap:1.6rem; } }
+.site-footer .logo-name{ color:#fff; }
+.footer-tag{ color:#C9B2A8; font-size:.95rem; margin-top:.8rem; max-width:30ch; }
+.site-footer h4{ font-size:.82rem; letter-spacing:.16em; text-transform:uppercase; color:#C9B2A8; margin-bottom:1rem; }
+.footer-links{ list-style:none; display:grid; gap:.55rem; font-size:.95rem; }
+.footer-links a{ text-decoration:none; opacity:.9; transition:.2s; }
+.footer-links a:hover{ opacity:1; color:#FBD3E2; }
+.footer-bottom{
+  border-top:1px solid rgba(255,255,255,.12); padding:1.2rem 0 1.6rem;
+  display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap;
+  font-size:.8rem; color:#C9B2A8;
+}
+
+/* ==========================================================
+   11. WHATSAPP FLOAT
+   ========================================================== */
+.wa-float{
+  position:fixed; right:1.3rem; bottom:1.3rem; z-index:80;
+  width:60px; height:60px; border-radius:50%;
+  background:var(--whatsapp); color:#fff;
+  display:grid; place-items:center; text-decoration:none;
+  box-shadow:0 14px 30px -10px rgba(37,211,102,.65);
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1);
+}
+.wa-float:hover{ transform:scale(1.1) rotate(6deg); }
+.wa-float::before{
+  content:""; position:absolute; inset:0; border-radius:50%;
+  background:var(--whatsapp); opacity:.45; z-index:-1;
+  animation:wapulse 2.4s ease-out infinite;
+}
+@keyframes wapulse{
+  0%{ transform:scale(1); opacity:.45; }
+  70%,100%{ transform:scale(1.7); opacity:0; }
+}
+.wa-float svg{ width:30px; height:30px; }
+
+/* ==========================================================
+   12. REDUCED MOTION
+   ========================================================== */
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  *,*::before,*::after{ animation:none !important; transition-duration:.01ms !important; }
+  .reveal{ opacity:1; transform:none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ================= HEADER ================= -->
+<header class="site-header">
+  <div class="wrap">
+    <a class="logo" href="#inicio" aria-label="Ella Nails Studio — inicio">
+      <!-- LOGO: replace this inline SVG with the client's logo -->
+      <svg class="logo-mark" viewBox="0 0 64 64" aria-hidden="true">
+        <circle cx="32" cy="32" r="30" fill="var(--blush)"/>
+        <path d="M32 12c6.5 9.5 12.5 16 12.5 24a12.5 12.5 0 1 1-25 0C19.5 28 25.5 21.5 32 12z" fill="var(--accent)"/>
+        <path d="M28.5 33c0-4 2-7.5 3.5-10 1.5 2.5 3.5 6 3.5 10" stroke="#fff" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+      </svg>
+      <span class="logo-name">Ella <em>Nails</em> Studio</span>
+    </a>
+    <nav class="main-nav" aria-label="Navegación principal">
+      <a href="#servicios">Servicios</a>
+      <a href="#galeria">Galería</a>
+      <a href="#opiniones">Opiniones</a>
+      <a href="#contacto">Contacto</a>
+      <a href="#reserva" class="btn btn-primary">Reserva tu cita</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- ================= 1 · HERO — 3D SLIDER ================= -->
+<section class="hero" id="inicio" aria-roledescription="carrusel" aria-label="Destacados del estudio">
+  <div class="hero-blob b1" aria-hidden="true"></div>
+  <div class="hero-blob b2" aria-hidden="true"></div>
+
+  <div class="wrap hero-head">
+    <span class="eyebrow">Nail spa · Bogotá</span>
+    <h1 class="hero-title">Uñas que hablan <em>por ti</em></h1>
+    <p class="hero-sub">Manicure, pedicure y nail art con cariño de estudio boutique.</p>
+  </div>
+
+  <div class="stage-wrap">
+    <div class="stage" id="stage">
+
+      <!-- SWAP PHOTO — HERO SLIDE 1: pink manicure with polish bottle (Unsplash, royalty-free) -->
+      <article class="slide" data-slide="0">
+        <div class="slide-media" style="background-image:url('https://images.unsplash.com/photo-1604654894610-df63bc536371?w=1400&q=75&auto=format&fit=crop')"></div>
+        <div class="slide-shade"></div>
+        <div class="slide-content">
+          <p class="slide-tag">Bienvenida a Ella Nails Studio</p>
+          <h2>Consiéntete: tus manos <em>merecen su momento</em></h2>
+          <a href="#reserva" class="btn btn-primary">Reserva tu cita</a>
+        </div>
+      </article>
+
+      <!-- SWAP PHOTO — HERO SLIDE 2: gel / semi-permanent application (Unsplash, royalty-free) -->
+      <article class="slide" data-slide="1">
+        <div class="slide-media" style="background-image:url('https://images.unsplash.com/photo-1610992015732-2449b76344bc?w=1400&q=75&auto=format&fit=crop')"></div>
+        <div class="slide-shade"></div>
+        <div class="slide-content">
+          <p class="slide-tag">El favorito de Bogotá</p>
+          <h2>Semipermanente impecable <em>hasta por 3 semanas</em></h2>
+          <a href="#reserva" class="btn btn-primary">Reserva tu cita</a>
+        </div>
+      </article>
+
+      <!-- SWAP PHOTO — HERO SLIDE 3: nail art detail work (Unsplash, royalty-free) -->
+      <article class="slide" data-slide="2">
+        <div class="slide-media" style="background-image:url('https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=1400&q=75&auto=format&fit=crop')"></div>
+        <div class="slide-shade"></div>
+        <div class="slide-content">
+          <p class="slide-tag">Diseños únicos</p>
+          <h2>Nail art a tu medida, <em>de sutil a atrevido</em></h2>
+          <a href="#reserva" class="btn btn-primary">Reserva tu cita</a>
+        </div>
+      </article>
+
+      <!-- SWAP PHOTO — HERO SLIDE 4: relaxing spa scene (Unsplash, royalty-free) -->
+      <article class="slide" data-slide="3">
+        <div class="slide-media" style="background-image:url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=1400&q=75&auto=format&fit=crop')"></div>
+        <div class="slide-shade"></div>
+        <div class="slide-content">
+          <p class="slide-tag">Spa de manos y pies</p>
+          <h2>Un respiro de spa <em>en medio de la ciudad</em></h2>
+          <a href="#reserva" class="btn btn-primary">Reserva tu cita</a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+
+  <div class="hero-controls">
+    <button class="ctrl-arrow" id="prevBtn" aria-label="Slide anterior">←</button>
+    <div class="dots" id="dots" role="tablist" aria-label="Ir a slide"></div>
+    <button class="ctrl-arrow" id="nextBtn" aria-label="Slide siguiente">→</button>
+  </div>
+
+  <!-- drip edge — playful nail-polish detail -->
+  <svg class="drip" viewBox="0 0 1440 54" preserveAspectRatio="none" aria-hidden="true">
+    <path fill="currentColor" d="M0,20 C120,48 240,4 380,18 C430,23 448,52 470,52 C492,52 500,24 560,18 C700,4 780,44 920,30 C960,26 976,54 1000,54 C1024,54 1036,28 1090,22 C1220,8 1330,40 1440,16 L1440,54 L0,54 Z"/>
+  </svg>
+</section>
+
+<!-- ================= 2 · SERVICES ================= -->
+<section id="servicios">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">Menú de servicios</span>
+      <h2 class="section-title">Precios claros, resultados <em style="color:var(--accent)">divinos</em></h2>
+      <p class="section-sub">Todos los servicios incluyen esterilización de herramientas y productos de primera calidad. Precios en pesos colombianos (COP).</p>
+    </div>
+
+    <div class="services-grid">
+
+      <div class="service-card reveal">
+        <div class="service-icon" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c2 3 4 5 4 7.5a4 4 0 1 1-8 0C8 8 10 6 12 3z"/><path d="M6 21c0-3 2.5-5 6-5s6 2 6 5"/></svg>
+        </div>
+        <h3>Manicure</h3>
+        <p class="service-note">Limpieza, cutícula, hidratación y esmaltado tradicional.</p>
+        <ul class="price-list">
+          <li>Manicure tradicional <i class="dots-fill"></i> <span class="price">$35.000</span></li>
+          <li>Manicure spa <i class="dots-fill"></i> <span class="price">$48.000</span></li>
+          <li>Cambio de esmalte <i class="dots-fill"></i> <span class="price">$18.000</span></li>
+        </ul>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-icon" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15c0-5 3-9 6-9 2.5 0 4 2 4 4.5 0 3-2 4.5-2 6.5h-8z"/><path d="M4 20h16"/></svg>
+        </div>
+        <h3>Pedicure</h3>
+        <p class="service-note">Exfoliación, tratamiento de talones y esmaltado.</p>
+        <ul class="price-list">
+          <li>Pedicure tradicional <i class="dots-fill"></i> <span class="price">$45.000</span></li>
+          <li>Pedicure spa <i class="dots-fill"></i> <span class="price">$60.000</span></li>
+          <li>Pedicure express <i class="dots-fill"></i> <span class="price">$30.000</span></li>
+        </ul>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-icon" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l2.5 2.5M16.5 16.5 19 19M19 5l-2.5 2.5M7.5 16.5 5 19"/><circle cx="12" cy="12" r="3.5"/></svg>
+        </div>
+        <h3>Semipermanente</h3>
+        <p class="service-note">Esmaltado en gel con secado UV/LED. Dura 2–3 semanas.</p>
+        <ul class="price-list">
+          <li>Semipermanente manos <i class="dots-fill"></i> <span class="price">$70.000</span></li>
+          <li>Semipermanente pies <i class="dots-fill"></i> <span class="price">$75.000</span></li>
+          <li>Retiro + hidratación <i class="dots-fill"></i> <span class="price">$15.000</span></li>
+        </ul>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-icon" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l-2 7H8L6 3z"/><path d="M8 10l-1.5 11h11L16 10"/></svg>
+        </div>
+        <h3>Uñas acrílicas</h3>
+        <p class="service-note">Esculpidas a tu medida: largo, forma y acabado.</p>
+        <ul class="price-list">
+          <li>Acrílicas esculpidas <i class="dots-fill"></i> <span class="price">desde $130.000</span></li>
+          <li>Mantenimiento / relleno <i class="dots-fill"></i> <span class="price">$85.000</span></li>
+          <li>Retiro de acrílicas <i class="dots-fill"></i> <span class="price">$30.000</span></li>
+        </ul>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-icon" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 3.5 20 9l-9.5 9.5a3.9 3.9 0 0 1-5.5-5.5L14.5 3.5z"/><path d="M13 5l5 5"/><path d="M5.5 13.5 10 18"/></svg>
+        </div>
+        <h3>Nail art</h3>
+        <p class="service-note">Desde detalles minimalistas hasta diseños completos.</p>
+        <ul class="price-list">
+          <li>Arte sencillo (por uña) <i class="dots-fill"></i> <span class="price">$4.000</span></li>
+          <li>Arte detallado (por uña) <i class="dots-fill"></i> <span class="price">$8.000</span></li>
+          <li>Diseño completo <i class="dots-fill"></i> <span class="price">desde $30.000</span></li>
+        </ul>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-icon" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21c-4 0-7-2.5-7-6 0-2 1-3.5 2.5-4.5C7 8 8.5 6 12 3c3.5 3 5 5 4.5 7.5C18 11.5 19 13 19 15c0 3.5-3 6-7 6z"/><path d="M9.5 15c0 1.4 1.1 2.5 2.5 2.5"/></svg>
+        </div>
+        <h3>Spa de manos y pies</h3>
+        <p class="service-note">Exfoliación, mascarilla, parafina y masaje relajante.</p>
+        <ul class="price-list">
+          <li>Spa de manos <i class="dots-fill"></i> <span class="price">$55.000</span></li>
+          <li>Spa de pies <i class="dots-fill"></i> <span class="price">$65.000</span></li>
+          <li>Ritual completo (2 h) <i class="dots-fill"></i> <span class="price">$110.000</span></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <p class="services-cta reveal">¿Vienes en grupo o quieres un paquete de novia? <a href="https://wa.me/573001234567?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20paquetes%20especiales" target="_blank" rel="noopener">Escríbenos por WhatsApp</a> y armamos un plan para ti.</p>
+  </div>
+</section>
+
+<!-- ================= 3 · GALLERY ================= -->
+<section id="galeria">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">Galería</span>
+      <h2 class="section-title">Trabajos que nos enorgullecen</h2>
+      <p class="section-sub">Un vistazo a nuestro estudio y a las uñas de nuestras clientas. Síguenos en redes para ver diseños nuevos cada semana.</p>
+    </div>
+
+    <div class="gallery-grid">
+      <!-- SWAP PHOTO — GALLERY 1 (tall): nude manicure close-up · replace with client photo -->
+      <figure class="shot tall reveal">
+        <img src="https://images.unsplash.com/photo-1607779097040-26e80aa78e66?w=700&q=70&auto=format&fit=crop" alt="Manicure en tonos nude" loading="lazy" onerror="this.remove()">
+        <figcaption>Semipermanente nude</figcaption>
+      </figure>
+      <!-- SWAP PHOTO — GALLERY 2 (wide): hand spa treatment · replace with client photo -->
+      <figure class="shot wide reveal">
+        <img src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=1000&q=70&auto=format&fit=crop" alt="Masaje de manos en spa" loading="lazy" onerror="this.remove()">
+        <figcaption>Spa de manos</figcaption>
+      </figure>
+      <!-- SWAP PHOTO — GALLERY 3: spa setting with towels · replace with client photo -->
+      <figure class="shot reveal">
+        <img src="https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=700&q=70&auto=format&fit=crop" alt="Ambiente de spa con toallas y velas" loading="lazy" onerror="this.remove()">
+        <figcaption>Nuestro ambiente</figcaption>
+      </figure>
+      <!-- SWAP PHOTO — GALLERY 4: candle & spa ambiance · replace with client photo -->
+      <figure class="shot reveal">
+        <img src="https://images.unsplash.com/photo-1596178065887-1198b6148b2b?w=700&q=70&auto=format&fit=crop" alt="Velas y aromaterapia" loading="lazy" onerror="this.remove()">
+        <figcaption>Aromaterapia</figcaption>
+      </figure>
+      <!-- SWAP PHOTO — GALLERY 5 (tall): beauty salon interior · replace with client photo -->
+      <figure class="shot tall reveal">
+        <img src="https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=700&q=70&auto=format&fit=crop" alt="Interior del estudio de belleza" loading="lazy" onerror="this.remove()">
+        <figcaption>El estudio</figcaption>
+      </figure>
+      <!-- SWAP PHOTO — GALLERY 6: relaxed client · replace with client photo -->
+      <figure class="shot reveal">
+        <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=700&q=70&auto=format&fit=crop" alt="Clienta relajada durante su tratamiento" loading="lazy" onerror="this.remove()">
+        <figcaption>Momento para ti</figcaption>
+      </figure>
+      <!-- SWAP PHOTO — GALLERY 7 (wide): stones / spa ritual · replace with client photo -->
+      <figure class="shot wide reveal">
+        <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=1000&q=70&auto=format&fit=crop" alt="Ritual de spa con piedras calientes" loading="lazy" onerror="this.remove()">
+        <figcaption>Ritual completo</figcaption>
+      </figure>
+      <!-- SWAP PHOTO — GALLERY 8: salon interior detail · replace with client photo -->
+      <figure class="shot reveal">
+        <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=700&q=70&auto=format&fit=crop" alt="Detalle del interior del salón" loading="lazy" onerror="this.remove()">
+        <figcaption>Rincón favorito</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 4 · TESTIMONIALS ================= -->
+<section id="opiniones">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">Opiniones</span>
+      <h2 class="section-title">Ellas ya se consintieron</h2>
+      <div class="rating-hero">
+        <span class="rating-num">4.9</span>
+        <div>
+          <div class="stars" aria-label="Calificación 4.9 de 5 estrellas">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+          </div>
+          <p class="rating-meta">Basado en más de 200 reseñas verificadas</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-grid">
+      <div class="testimonial reveal">
+        <div class="stars" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+        </div>
+        <p>"El mejor semipermanente que me he hecho en Bogotá. Me duró tres semanas intacto y el lugar es un sueño: llegué estresada y salí nueva."</p>
+        <div class="t-author">
+          <span class="t-avatar" aria-hidden="true">LM</span>
+          <div>
+            <p class="t-name">Laura Martínez</p>
+            <p class="t-service">Semipermanente manos</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial reveal">
+        <div class="stars" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+        </div>
+        <p>"Pedí un nail art para mi matrimonio y quedaron divinas. Entendieron exactamente lo que quería y me mandaron la confirmación por WhatsApp en cinco minutos."</p>
+        <div class="t-author">
+          <span class="t-avatar" aria-hidden="true">CR</span>
+          <div>
+            <p class="t-name">Camila Rodríguez</p>
+            <p class="t-service">Nail art · Acrílicas</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial reveal">
+        <div class="stars" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+        </div>
+        <p>"El ritual de spa de pies es otro nivel. Reservé en línea saliendo del trabajo y al día siguiente ya estaba en mi cita. Cero filas, cero estrés."</p>
+        <div class="t-author">
+          <span class="t-avatar" aria-hidden="true">VG</span>
+          <div>
+            <p class="t-name">Valentina Gómez</p>
+            <p class="t-service">Spa de pies · Pedicure</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 5 · BOOKING ================= -->
+<section id="reserva">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">Reserva en línea</span>
+      <h2 class="section-title">Agenda tu cita en un minuto</h2>
+      <p class="section-sub">Elige tu servicio y tu horario. No necesitas pagar nada en línea: nosotras te confirmamos por WhatsApp.</p>
+    </div>
+
+    <div class="booking-grid">
+      <div class="reveal">
+        <ol class="booking-steps">
+          <li>
+            <span class="step-dot">1</span>
+            <div><b>Elige tu servicio</b><span>Del menú, con precio claro desde el inicio.</span></div>
+          </li>
+          <li>
+            <span class="step-dot">2</span>
+            <div><b>Escoge fecha y hora</b><span>Los cupos son de referencia; confirmamos disponibilidad real.</span></div>
+          </li>
+          <li>
+            <span class="step-dot">3</span>
+            <div><b>Te confirmamos por WhatsApp</b><span>En horario de atención respondemos en menos de 30 minutos.</span></div>
+          </li>
+        </ol>
+        <p class="no-pay-note">💅 <b>Sin pagos en línea.</b> Pagas directamente en el estudio: efectivo, tarjeta o transferencia.</p>
+      </div>
+
+      <div>
+        <form class="booking-form reveal" id="bookingForm" novalidate>
+          <div class="field">
+            <label for="servicio">Servicio</label>
+            <select id="servicio" name="servicio" required>
+              <option value="" disabled selected>Elige un servicio…</option>
+              <optgroup label="Manicure">
+                <option>Manicure tradicional — $35.000</option>
+                <option>Manicure spa — $48.000</option>
+              </optgroup>
+              <optgroup label="Pedicure">
+                <option>Pedicure tradicional — $45.000</option>
+                <option>Pedicure spa — $60.000</option>
+              </optgroup>
+              <optgroup label="Semipermanente">
+                <option>Semipermanente manos — $70.000</option>
+                <option>Semipermanente pies — $75.000</option>
+              </optgroup>
+              <optgroup label="Uñas acrílicas">
+                <option>Acrílicas esculpidas — desde $130.000</option>
+                <option>Mantenimiento acrílicas — $85.000</option>
+              </optgroup>
+              <optgroup label="Nail art">
+                <option>Nail art / diseño — desde $30.000</option>
+              </optgroup>
+              <optgroup label="Spa">
+                <option>Spa de manos — $55.000</option>
+                <option>Spa de pies — $65.000</option>
+                <option>Ritual completo manos y pies — $110.000</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="fecha">Fecha</label>
+            <input type="date" id="fecha" name="fecha" required>
+          </div>
+
+          <div class="field">
+            <label>Hora preferida</label>
+            <div class="slots" id="slots" role="radiogroup" aria-label="Hora preferida"></div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="nombre">Tu nombre</label>
+              <input type="text" id="nombre" name="nombre" placeholder="Ej: Mariana López" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="whatsapp">Tu WhatsApp</label>
+              <div class="phone-wrap">
+                <span class="phone-prefix">🇨🇴 +57</span>
+                <input type="tel" id="whatsapp" name="whatsapp" placeholder="300 123 4567" inputmode="numeric" pattern="[0-9\s]{7,12}" autocomplete="tel-national" required>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Enviar solicitud de cita ✨</button>
+          <p class="form-hint">Al enviar aceptas que te contactemos por WhatsApp para confirmar tu cita.</p>
+        </form>
+
+        <div class="booking-form confirmation hidden" id="confirmation" role="status" aria-live="polite">
+          <div class="check-ring" aria-hidden="true">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          </div>
+          <h3>¡Solicitud recibida! 💖</h3>
+          <p id="confName">Gracias. Revisaremos la disponibilidad y <b>te confirmaremos tu cita por WhatsApp</b> muy pronto.</p>
+          <div class="resumen" id="confResumen"></div>
+          <p style="font-size:.85rem;">Recuerda: no necesitas pagar nada en línea.</p>
+          <a class="btn btn-wa" id="confWaBtn" href="#" target="_blank" rel="noopener">Abrir WhatsApp ahora</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 6 · HOURS + LOCATION ================= -->
+<section id="contacto">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="eyebrow">Visítanos</span>
+      <h2 class="section-title">Horario y ubicación</h2>
+    </div>
+
+    <div class="contact-grid">
+      <div class="info-card reveal">
+        <h3>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          Horario de atención
+        </h3>
+        <table class="hours-table">
+          <tr><td>Lunes a viernes</td><td>9:00 a.m. – 7:00 p.m.</td></tr>
+          <tr><td>Sábados</td><td>9:00 a.m. – 6:00 p.m.</td></tr>
+          <tr><td>Domingos y festivos</td><td>10:00 a.m. – 4:00 p.m.</td></tr>
+        </table>
+
+        <h3 style="margin-top:1.8rem;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 1 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Dónde estamos
+        </h3>
+        <!-- SWAP ADDRESS: replace with the client's real address -->
+        <address class="address">
+          <b>Calle 85 # 12-34, Local 201</b><br>
+          Quinta Camacho · Bogotá<br>
+          A dos cuadras de la estación Calle 85
+        </address>
+        <a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&query=Calle+85+%2312-34+Bogot%C3%A1" target="_blank" rel="noopener">Cómo llegar 📍</a>
+      </div>
+
+      <!-- SWAP ADDRESS: update the map query to the client's address -->
+      <iframe class="map-frame reveal" title="Mapa de ubicación del estudio" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        src="https://www.google.com/maps?q=Calle+85+%23+12-34,+Bogot%C3%A1&output=embed"></iframe>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ================= 7 · FOOTER ================= -->
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a class="logo" href="#inicio" aria-label="Ella Nails Studio — inicio">
+          <svg class="logo-mark" viewBox="0 0 64 64" aria-hidden="true">
+            <circle cx="32" cy="32" r="30" fill="rgba(255,255,255,.12)"/>
+            <path d="M32 12c6.5 9.5 12.5 16 12.5 24a12.5 12.5 0 1 1-25 0C19.5 28 25.5 21.5 32 12z" fill="var(--accent)"/>
+            <path d="M28.5 33c0-4 2-7.5 3.5-10 1.5 2.5 3.5 6 3.5 10" stroke="#fff" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+          </svg>
+          <span class="logo-name">Ella <em>Nails</em> Studio</span>
+        </a>
+        <p class="footer-tag">Un estudio boutique donde tus manos y pies siempre son protagonistas.</p>
+      </div>
+      <div>
+        <h4>Explora</h4>
+        <ul class="footer-links">
+          <li><a href="#servicios">Menú de servicios</a></li>
+          <li><a href="#galeria">Galería</a></li>
+          <li><a href="#opiniones">Opiniones</a></li>
+          <li><a href="#reserva">Reserva tu cita</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contacto</h4>
+        <ul class="footer-links">
+          <li><a href="https://wa.me/573001234567" target="_blank" rel="noopener">WhatsApp: 300 123 4567</a></li>
+          <li><a href="#contacto">Calle 85 # 12-34, Bogotá</a></li>
+          <li><a href="#" aria-disabled="true">Instagram @ellanails (demo)</a></li>
+          <li><a href="#" aria-disabled="true">TikTok @ellanails (demo)</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year">2026</span> Ella Nails Studio · Bogotá, Colombia</span>
+      <span>Prototipo de demostración — no es un sitio en producción</span>
+    </div>
+  </div>
+</footer>
+
+<!-- WhatsApp float — SWAP number 573001234567 -->
+<a class="wa-float" href="https://wa.me/573001234567?text=Hola%2C%20quiero%20reservar%20una%20cita%20%F0%9F%92%85" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
+  <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+    <path d="M16 3C9.4 3 4 8.4 4 15c0 2.1.6 4.2 1.6 6L4 29l8.2-1.6c1.2.6 2.5.9 3.8.9 6.6 0 12-5.4 12-12S22.6 3 16 3zm0 22.2c-1.2 0-2.4-.3-3.5-.8l-.7-.4-4.9 1 1-4.7-.4-.7c-.9-1.5-1.4-3.2-1.4-4.9 0-5.4 4.4-9.9 9.9-9.9s9.9 4.4 9.9 9.9-4.4 9.5-9.9 9.5zm5.4-7.1c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.7-1.7-1-2.3-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.2-.3-.2-.6-.4z"/>
+  </svg>
+</a>
+
+<script>
+/* ==========================================================
+   3D HERO SLIDER
+   ========================================================== */
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const stage = document.getElementById('stage');
+  const hero = document.querySelector('.hero');
+  const dotsBox = document.getElementById('dots');
+  const n = slides.length;
+  let active = 0, timer = null;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // dots
+  slides.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'dot';
+    d.setAttribute('aria-label', 'Ir al slide ' + (i + 1));
+    d.addEventListener('click', () => go(i, true));
+    dotsBox.appendChild(d);
+  });
+  const dots = Array.from(dotsBox.children);
+
+  function render(){
+    slides.forEach((s, i) => {
+      const diff = (i - active + n) % n;
+      s.classList.remove('is-active','is-left','is-right','is-back');
+      if (diff === 0) s.classList.add('is-active');
+      else if (diff === 1) s.classList.add('is-right');
+      else if (diff === n - 1) s.classList.add('is-left');
+      else s.classList.add('is-back');
+      s.setAttribute('aria-hidden', diff !== 0);
+    });
+    dots.forEach((d, i) => d.classList.toggle('is-active', i === active));
+  }
+
+  function go(i, user){
+    active = (i + n) % n;
+    render();
+    if (user) restart();
+  }
+
+  function restart(){
+    if (reduceMotion) return;
+    clearInterval(timer);
+    timer = setInterval(() => go(active + 1), 5500);
+  }
+
+  document.getElementById('nextBtn').addEventListener('click', () => go(active + 1, true));
+  document.getElementById('prevBtn').addEventListener('click', () => go(active - 1, true));
+
+  // click a side card to bring it to the front
+  slides.forEach((s, i) => s.addEventListener('click', (e) => {
+    if (i !== active && !dragged){ e.preventDefault(); go(i, true); }
+  }));
+
+  // keyboard
+  hero.setAttribute('tabindex','0');
+  hero.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') go(active + 1, true);
+    if (e.key === 'ArrowLeft') go(active - 1, true);
+  });
+
+  // swipe (touch + mouse drag)
+  let startX = null, dragged = false;
+  hero.addEventListener('pointerdown', (e) => { startX = e.clientX; dragged = false; });
+  hero.addEventListener('pointermove', (e) => {
+    if (startX !== null && Math.abs(e.clientX - startX) > 12) dragged = true;
+  });
+  hero.addEventListener('pointerup', (e) => {
+    if (startX === null) return;
+    const dx = e.clientX - startX;
+    if (Math.abs(dx) > 45) go(active + (dx < 0 ? 1 : -1), true);
+    startX = null;
+    setTimeout(() => { dragged = false; }, 50);
+  });
+  hero.addEventListener('pointercancel', () => { startX = null; });
+
+  // gentle parallax tilt on desktop pointers
+  if (!reduceMotion && window.matchMedia('(hover:hover)').matches){
+    hero.addEventListener('pointermove', (e) => {
+      const r = hero.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - .5;
+      const y = (e.clientY - r.top) / r.height - .5;
+      stage.style.setProperty('--tiltY', (x * 5) + 'deg');
+      stage.style.setProperty('--tiltX', (y * -3) + 'deg');
+    });
+    hero.addEventListener('pointerleave', () => {
+      stage.style.setProperty('--tiltY', '0deg');
+      stage.style.setProperty('--tiltX', '0deg');
+    });
+  }
+
+  // pause when tab hidden / hero hovered
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) clearInterval(timer); else restart();
+  });
+  hero.addEventListener('mouseenter', () => clearInterval(timer));
+  hero.addEventListener('mouseleave', restart);
+
+  render();
+  restart();
+})();
+
+/* ==========================================================
+   SCROLL REVEAL
+   ========================================================== */
+(function(){
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting){ e.target.classList.add('is-visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: .15 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  // also mark the testimonials header (star pop) container
+})();
+
+/* ==========================================================
+   BOOKING FORM
+   ========================================================== */
+(function(){
+  const form = document.getElementById('bookingForm');
+  const slotsBox = document.getElementById('slots');
+  const fecha = document.getElementById('fecha');
+
+  // available time slots (visual reference only — spa confirms by WhatsApp)
+  const HORAS = ['9:00 a.m.','10:30 a.m.','12:00 m.','1:30 p.m.','3:00 p.m.','4:30 p.m.','6:00 p.m.'];
+  HORAS.forEach((h, i) => {
+    const label = document.createElement('label');
+    label.className = 'slot';
+    label.innerHTML = '<input type="radio" name="hora" value="' + h + '"' + (i === 0 ? ' required' : '') + '><span>' + h + '</span>';
+    slotsBox.appendChild(label);
+  });
+
+  // date range: today → +60 days
+  const pad = (v) => String(v).padStart(2, '0');
+  const toISO = (d) => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+  const today = new Date();
+  const max = new Date(); max.setDate(max.getDate() + 60);
+  fecha.min = toISO(today);
+  fecha.max = toISO(max);
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!form.reportValidity()) return;
+    const hora = form.querySelector('input[name="hora"]:checked');
+    if (!hora){ alert('Elige una hora preferida 💅'); return; }
+
+    const servicio = document.getElementById('servicio').value;
+    const nombre = document.getElementById('nombre').value.trim();
+    const tel = document.getElementById('whatsapp').value.trim();
+    const [y, m, d] = fecha.value.split('-');
+    const fechaTxt = d + '/' + m + '/' + y;
+
+    document.getElementById('confResumen').innerHTML =
+      '<b>' + servicio + '</b><br>📅 ' + fechaTxt + ' · 🕐 ' + hora.value +
+      '<br>👤 ' + nombre + ' · 📱 +57 ' + tel;
+
+    // prefilled WhatsApp message — SWAP number 573001234567
+    const msg = 'Hola, soy ' + nombre + ' 💅 Acabo de pedir una cita en la página web: ' +
+      servicio + ', el ' + fechaTxt + ' a las ' + hora.value + '. ¿Me confirmas disponibilidad?';
+    document.getElementById('confWaBtn').href =
+      'https://wa.me/573001234567?text=' + encodeURIComponent(msg);
+
+    form.classList.add('hidden');
+    const conf = document.getElementById('confirmation');
+    conf.classList.remove('hidden');
+    conf.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+})();
+
+/* footer year */
+document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
