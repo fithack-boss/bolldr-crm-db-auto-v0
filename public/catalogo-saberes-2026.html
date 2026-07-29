@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catálogo de Saberes 2026 · Tienda de Beneficios — Fundación Inti Huasi Casa del Sol</title>
+<meta name="description" content="Tienda de beneficios del Catálogo de Saberes 2026 de la Fundación Inti Huasi Casa del Sol y su red de emprendimientos aliados. Filtra por categoría y ordena por descuento.">
+<link rel="icon" href="https://intihuasi.org/wp-content/uploads/cropped-icon-32x32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --azul:#6d87c4;          /* periwinkle del catálogo */
+    --azul-claro:#8fa4d6;
+    --azul-suave:#eef1f9;
+    --azul-oscuro:#46598f;
+    --azul-noche:#39497a;
+    --sol:#f7b32b;           /* amarillo sol — Casa del Sol */
+    --sol-oscuro:#e09a10;
+    --crema:#faf8f3;
+    --tinta:#2e3440;
+    --gris:#6b7280;
+    --blanco:#ffffff;
+    --sombra:0 2px 10px rgba(57,73,122,.10);
+    --sombra-hover:0 10px 28px rgba(57,73,122,.22);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Roboto',system-ui,sans-serif;background:var(--crema);color:var(--tinta);line-height:1.5}
+  h1,h2,h3,.font-brand{font-family:'Yanone Kaffeesatz',sans-serif}
+  a{color:var(--azul-oscuro)}
+  img{max-width:100%}
+
+  /* ---------- Header ---------- */
+  header{
+    background:linear-gradient(135deg,#7d95cd 0%,var(--azul) 45%,#5a72b0 100%);
+    color:#fff;position:relative;overflow:hidden;
+  }
+  header .sun{
+    position:absolute;right:-70px;top:-70px;width:340px;height:340px;opacity:.22;pointer-events:none;
+  }
+  header .rays{position:absolute;left:-90px;bottom:-120px;width:300px;height:300px;opacity:.12;pointer-events:none}
+  .header-inner{max-width:1200px;margin:0 auto;padding:42px 24px 34px;position:relative}
+  .brand-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .brand-row .logo-dot{
+    width:52px;height:52px;border-radius:50%;background:var(--sol);color:var(--azul-noche);
+    display:flex;align-items:center;justify-content:center;flex:0 0 auto;box-shadow:0 3px 10px rgba(0,0,0,.18);
+  }
+  .brand-row .logo-dot svg{width:34px;height:34px}
+  .brand-name{font-family:'Yanone Kaffeesatz';font-weight:500;font-size:1.35rem;letter-spacing:.04em;text-transform:uppercase;opacity:.95}
+  header h1{font-size:clamp(2.4rem,6vw,4rem);font-weight:700;line-height:1.02;margin-top:14px;letter-spacing:.01em}
+  header h1 .anio{color:var(--sol)}
+  .header-sub{margin-top:10px;max-width:640px;font-weight:300;font-size:1.05rem;opacity:.94}
+  .header-chips{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}
+  .chip{
+    display:inline-flex;align-items:center;gap:7px;padding:7px 15px;border-radius:999px;
+    background:rgba(255,255,255,.16);backdrop-filter:blur(3px);font-size:.9rem;color:#fff;text-decoration:none;
+    border:1px solid rgba(255,255,255,.25);
+  }
+  .chip.solid{background:var(--sol);color:var(--azul-noche);font-weight:700;border-color:transparent}
+  .tarjeta-nota{
+    margin-top:22px;background:rgba(255,255,255,.13);border-left:4px solid var(--sol);
+    padding:12px 16px;border-radius:0 10px 10px 0;max-width:680px;font-size:.92rem;font-weight:300;
+  }
+  .tarjeta-nota b{font-weight:500}
+
+  /* ---------- Toolbar ---------- */
+  .toolbar{
+    position:sticky;top:0;z-index:40;background:rgba(250,248,243,.94);backdrop-filter:blur(8px);
+    border-bottom:1px solid #e5e1d6;box-shadow:0 2px 8px rgba(57,73,122,.06);
+  }
+  .toolbar-inner{max-width:1200px;margin:0 auto;padding:14px 24px;display:flex;flex-direction:column;gap:12px}
+  .toolbar-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .search-wrap{flex:1 1 240px;position:relative;min-width:200px}
+  .search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:17px;height:17px;color:var(--gris)}
+  #search{
+    width:100%;padding:10px 14px 10px 38px;border-radius:999px;border:1.5px solid #dcd7c9;background:#fff;
+    font:inherit;font-size:.95rem;outline:none;transition:border-color .15s;
+  }
+  #search:focus{border-color:var(--azul)}
+  .sort-wrap{display:flex;align-items:center;gap:8px}
+  .sort-wrap label{font-size:.85rem;color:var(--gris);white-space:nowrap}
+  #sort{
+    padding:10px 14px;border-radius:999px;border:1.5px solid #dcd7c9;background:#fff;font:inherit;
+    font-size:.92rem;cursor:pointer;outline:none;
+  }
+  #sort:focus{border-color:var(--azul)}
+  .count-pill{font-size:.85rem;color:var(--azul-oscuro);background:var(--azul-suave);border-radius:999px;padding:8px 14px;white-space:nowrap;font-weight:500}
+  .cats{display:flex;gap:8px;flex-wrap:wrap}
+  .cat-btn{
+    font-family:'Yanone Kaffeesatz';font-size:1.02rem;letter-spacing:.03em;
+    padding:7px 16px;border-radius:999px;border:1.5px solid var(--azul-claro);
+    background:#fff;color:var(--azul-oscuro);cursor:pointer;transition:all .15s;
+  }
+  .cat-btn:hover{background:var(--azul-suave)}
+  .cat-btn.active{background:var(--azul);border-color:var(--azul);color:#fff;box-shadow:0 3px 10px rgba(109,135,196,.4)}
+  .cat-btn .n{opacity:.65;font-size:.85em;margin-left:4px}
+
+  /* ---------- Grid / Cards ---------- */
+  main{max-width:1200px;margin:0 auto;padding:30px 24px 60px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:22px}
+  .card{
+    background:#fff;border-radius:16px;overflow:hidden;box-shadow:var(--sombra);
+    display:flex;flex-direction:column;transition:transform .18s,box-shadow .18s;position:relative;
+  }
+  .card:hover{transform:translateY(-4px);box-shadow:var(--sombra-hover)}
+  .card-img{
+    aspect-ratio:1125/813;background:var(--azul-suave);position:relative;cursor:zoom-in;overflow:hidden;
+  }
+  .card-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+  .card:hover .card-img img{transform:scale(1.04)}
+  .card-img .fallback{
+    position:absolute;inset:0;display:none;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,var(--azul-claro),var(--azul));color:#fff;
+    font-family:'Yanone Kaffeesatz';font-size:3rem;font-weight:600;
+  }
+  .badge-dto{
+    position:absolute;top:10px;right:10px;background:var(--sol);color:var(--azul-noche);
+    border-radius:12px;padding:5px 11px;text-align:center;line-height:1;box-shadow:0 3px 8px rgba(0,0,0,.22);
+    font-family:'Yanone Kaffeesatz';
+  }
+  .badge-dto .pct{font-size:1.45rem;font-weight:700;display:block}
+  .badge-dto .lbl{font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+  .badge-ih{
+    position:absolute;top:10px;left:10px;background:rgba(255,255,255,.94);color:var(--azul-oscuro);
+    border-radius:999px;padding:4px 10px;font-size:.72rem;font-weight:700;display:flex;align-items:center;gap:5px;
+    box-shadow:0 2px 6px rgba(0,0,0,.15);
+  }
+  .badge-ih svg{width:12px;height:12px;color:var(--sol-oscuro)}
+  .card-body{padding:16px 16px 14px;display:flex;flex-direction:column;gap:9px;flex:1}
+  .card-cat{
+    align-self:flex-start;font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--azul-oscuro);background:var(--azul-suave);padding:4px 10px;border-radius:999px;
+  }
+  .card h3{font-size:1.55rem;font-weight:600;line-height:1.08;color:var(--tinta)}
+  .card .dto-line{font-size:.88rem;color:var(--sol-oscuro);font-weight:700}
+  .card .desc{
+    font-size:.88rem;color:var(--gris);font-weight:300;
+    display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;
+  }
+  .card .desc.open{-webkit-line-clamp:unset}
+  .ver-mas{
+    background:none;border:none;color:var(--azul);font-size:.8rem;cursor:pointer;padding:0;
+    align-self:flex-start;text-decoration:underline;font-family:inherit;
+  }
+  .contactos{border-top:1px dashed #e5e1d6;padding-top:10px;margin-top:auto;display:flex;flex-direction:column;gap:6px}
+  .contacto-nombre{font-size:.82rem;font-weight:500;color:var(--tinta)}
+  .contacto-links{display:flex;gap:8px;flex-wrap:wrap}
+  .c-link{
+    display:inline-flex;align-items:center;gap:6px;font-size:.78rem;text-decoration:none;
+    padding:5px 10px;border-radius:999px;border:1px solid #e0dccf;color:var(--azul-oscuro);transition:all .15s;
+    max-width:100%;
+  }
+  .c-link span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .c-link:hover{background:var(--azul-suave);border-color:var(--azul-claro)}
+  .c-link.wa:hover{background:#e7f8ec;border-color:#25d366;color:#128c4b}
+  .c-link svg{width:13px;height:13px;flex:0 0 auto}
+  .card-foot{padding:0 16px 16px}
+  .btn-catalogo{
+    width:100%;border:none;cursor:pointer;border-radius:10px;padding:10px;
+    background:var(--azul);color:#fff;font-family:'Yanone Kaffeesatz';font-size:1.1rem;letter-spacing:.05em;
+    transition:background .15s;display:flex;align-items:center;justify-content:center;gap:8px;
+  }
+  .btn-catalogo:hover{background:var(--azul-oscuro)}
+  .empty{
+    text-align:center;padding:70px 20px;color:var(--gris);
+  }
+  .empty .font-brand{font-size:2rem;color:var(--azul-oscuro)}
+
+  /* ---------- Modal ---------- */
+  .modal{
+    position:fixed;inset:0;background:rgba(30,38,64,.86);z-index:100;display:none;
+    align-items:center;justify-content:center;padding:20px;
+  }
+  .modal.open{display:flex}
+  .modal-box{max-width:min(1050px,96vw);max-height:92vh;position:relative;display:flex;flex-direction:column;align-items:center;gap:10px}
+  .modal-box img{max-width:100%;max-height:80vh;border-radius:10px;box-shadow:0 10px 40px rgba(0,0,0,.5);background:#fff}
+  .modal-caption{color:#fff;font-family:'Yanone Kaffeesatz';font-size:1.3rem;text-align:center}
+  .modal-btn{
+    position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.92);border:none;
+    width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:1.3rem;color:var(--azul-noche);
+    display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.3);
+  }
+  .modal-btn:hover{background:var(--sol)}
+  .modal-prev{left:-14px}.modal-next{right:-14px}
+  .modal-close{
+    position:absolute;top:-14px;right:-8px;background:var(--sol);border:none;width:38px;height:38px;border-radius:50%;
+    cursor:pointer;font-size:1.15rem;color:var(--azul-noche);font-weight:700;box-shadow:0 3px 10px rgba(0,0,0,.3);z-index:2;
+  }
+
+  /* ---------- Footer ---------- */
+  footer{background:var(--azul-noche);color:#cdd6ee;margin-top:20px}
+  .footer-inner{max-width:1200px;margin:0 auto;padding:40px 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:28px}
+  footer h3{color:#fff;font-size:1.5rem;margin-bottom:10px;font-weight:600}
+  footer a{color:var(--sol);text-decoration:none}
+  footer a:hover{text-decoration:underline}
+  footer ul{list-style:none;display:flex;flex-direction:column;gap:8px;font-size:.92rem;font-weight:300}
+  .footer-base{border-top:1px solid rgba(255,255,255,.12);padding:16px 24px;text-align:center;font-size:.8rem;font-weight:300;color:#9aa8d0}
+  @media (max-width:560px){
+    .modal-prev{left:4px}.modal-next{right:4px}
+    .header-inner{padding:32px 18px 26px}
+    main{padding:22px 14px 50px}
+    .toolbar-inner{padding:12px 14px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <svg class="sun" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="22" fill="#fff"/><g stroke="#fff" stroke-width="4" stroke-linecap="round"><line x1="50" y1="8" x2="50" y2="20"/><line x1="50" y1="80" x2="50" y2="92"/><line x1="8" y1="50" x2="20" y2="50"/><line x1="80" y1="50" x2="92" y2="50"/><line x1="20" y1="20" x2="29" y2="29"/><line x1="71" y1="71" x2="80" y2="80"/><line x1="20" y1="80" x2="29" y2="71"/><line x1="71" y1="29" x2="80" y2="20"/></g></svg>
+  <svg class="rays" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="30" fill="none" stroke="#fff" stroke-width="3"/><circle cx="50" cy="50" r="44" fill="none" stroke="#fff" stroke-width="2"/></svg>
+  <div class="header-inner">
+    <div class="brand-row">
+      <div class="logo-dot" aria-hidden="true">
+        <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="20" fill="currentColor"/><g stroke="currentColor" stroke-width="5" stroke-linecap="round"><line x1="50" y1="10" x2="50" y2="22"/><line x1="50" y1="78" x2="50" y2="90"/><line x1="10" y1="50" x2="22" y2="50"/><line x1="78" y1="50" x2="90" y2="50"/><line x1="22" y1="22" x2="30" y2="30"/><line x1="70" y1="70" x2="78" y2="78"/><line x1="22" y1="78" x2="30" y2="70"/><line x1="70" y1="30" x2="78" y2="22"/></g></svg>
+      </div>
+      <div>
+        <div class="brand-name">Fundación Inti Huasi · Casa del Sol</div>
+        <div style="font-size:.85rem;font-weight:300;opacity:.85">Red de emprendimientos aliados · Mercadeo solidario</div>
+      </div>
+    </div>
+    <h1>Catálogo de Saberes <span class="anio">2026</span></h1>
+    <p class="header-sub">Una producción de la comunidad Inti Huasi y su red de mercadeo solidario. Explora los beneficios como en una tienda: filtra por categoría, ordena por descuento y contacta directamente a cada proveedor.</p>
+    <div class="header-chips">
+      <span class="chip solid">☀ #Juntos Brillamos Más</span>
+      <a class="chip" href="https://intihuasi.org/acciones-sociales/" target="_blank" rel="noopener">10.000 Acciones Sociales por Inti Huasi</a>
+      <a class="chip" href="https://youtu.be/QnX2870h7Go" target="_blank" rel="noopener">▶ Video de la campaña</a>
+    </div>
+    <div class="tarjeta-nota">
+      <b>¿Tienes la tarjeta de Acciones Sociales por Inti Huasi?</b> Presenta tu tarjeta ante cada emprendimiento aliado para acceder a los descuentos publicados, y haz tu pedido directamente con el proveedor.
+    </div>
+  </div>
+</header>
+
+<div class="toolbar">
+  <div class="toolbar-inner">
+    <div class="toolbar-row">
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+        <input id="search" type="search" placeholder="Buscar emprendimiento, producto o servicio…" aria-label="Buscar">
+      </div>
+      <div class="sort-wrap">
+        <label for="sort">Ordenar:</label>
+        <select id="sort">
+          <option value="dto-desc">Mayor descuento</option>
+          <option value="dto-asc">Menor descuento</option>
+          <option value="nombre-asc">Nombre A–Z</option>
+          <option value="nombre-desc">Nombre Z–A</option>
+          <option value="catalogo">Orden del catálogo</option>
+        </select>
+      </div>
+      <span class="count-pill" id="count"></span>
+    </div>
+    <div class="cats" id="cats" role="group" aria-label="Filtrar por categoría"></div>
+  </div>
+</div>
+
+<main>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" hidden>
+    <div class="font-brand">Sin resultados</div>
+    <p>Prueba con otra categoría o borra la búsqueda.</p>
+  </div>
+</main>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Página del catálogo">
+  <div class="modal-box">
+    <button class="modal-close" id="modalClose" aria-label="Cerrar">✕</button>
+    <button class="modal-btn modal-prev" id="modalPrev" aria-label="Anterior">‹</button>
+    <img id="modalImg" src="" alt="">
+    <button class="modal-btn modal-next" id="modalNext" aria-label="Siguiente">›</button>
+    <div class="modal-caption" id="modalCap"></div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <h3>Fundación Inti Huasi Casa del Sol</h3>
+      <ul>
+        <li><a href="https://intihuasi.org" target="_blank" rel="noopener">intihuasi.org</a></li>
+        <li>Tel. (+57 1) 647 1274 · Cel. 305 810 8448</li>
+        <li><a href="mailto:accionessociales@intihuasi.org">accionessociales@intihuasi.org</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Catálogo</h3>
+      <ul>
+        <li><a href="https://intihuasi.org/wp-content/uploads/catalogo-de-saberes-final.pdf" target="_blank" rel="noopener">Descargar catálogo completo (PDF)</a></li>
+        <li><a href="https://intihuasi.org/wp-content/uploads/Terminos-y-condiciones.pdf" target="_blank" rel="noopener">Términos y condiciones de la tarjeta</a></li>
+        <li><a href="https://intihuasi.org/acciones-sociales/" target="_blank" rel="noopener">Página de Acciones Sociales</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Sobre esta tienda</h3>
+      <ul>
+        <li>Los descuentos aplican presentando la tarjeta de Acciones Sociales por Inti Huasi.</li>
+        <li>Cada pedido se hace directamente con el emprendimiento aliado.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-base">Contenido: Catálogo de Saberes 2026 — Fundación Inti Huasi y su red de emprendimientos aliados · intihuasi.org</div>
+</footer>
+
+<script>
+const IMG_BASE = 'https://intihuasi.org/wp-content/uploads/catalogo-de-saberes-final_page-';
+const pageImg = p => IMG_BASE + String(p).padStart(4,'0') + '.jpg';
+
+/* dto: valor numérico para ordenar (mayor % del beneficio). dtoLabel/dtoDetail: como aparece en el catálogo. */
+const OFERTAS = [
+  {p:3,  nombre:'Productos con marca Inti Huasi', cat:'Alimentos y Bebidas', dto:10, dtoLabel:'10%', dtoDetail:'en sus productos', ih:true,
+   desc:'Somos una comunidad que cuida la salud: alimentos y bebidas saludables y de origen natural, que cuidan tanto a personas como a animales y a la naturaleza en general.',
+   contactos:[{n:'Fundación Inti Huasi', e:'accionessociales@intihuasi.org', t:'3058108448'}]},
+  {p:4,  nombre:'Extracurriculares Inti Huasi', cat:'Educación y Clases', dto:10, dtoLabel:'10%', dtoDetail:'en sus clases', ih:true,
+   desc:'Danza, inglés, ultimate, fútbol, música, tejido y manualidades, artes plásticas y agroecología. ¡Aprendizaje, creatividad y diversión en un solo lugar!',
+   contactos:[{n:'Informes e inscripciones', e:'sofia.toro@intihuasi.org', t:''}]},
+  {p:5,  nombre:'Extracurriculares Jardín Inti Huasi', cat:'Educación y Clases', dto:10, dtoLabel:'10%', dtoDetail:'en sus clases', ih:true,
+   desc:'Danza, inglés, ultimate, fútbol, música, tejido y manualidades, artes plásticas y agroecología para los más pequeños del jardín.',
+   contactos:[{n:'Informes e inscripciones', e:'sofia.toro@intihuasi.org', t:''}]},
+  {p:6,  nombre:'Club de Tareas Inti Huasi', cat:'Educación y Clases', dto:10, dtoLabel:'10%', dtoDetail:'en sus servicios', ih:true,
+   desc:'Acompañamiento en tareas y refuerzos académicos: español y gramática, sociales, ciencias naturales y matemáticas de 1.º a 6.º grado.',
+   contactos:[{n:'Claudia Victoria Ramírez Gómez', e:'tagur.azul1@gmail.com', t:'3053504386'}]},
+  {p:7,  nombre:'Integrando Sentidos Inti Huasi', cat:'Salud y Bienestar', dto:10, dtoLabel:'10%', dtoDetail:'en sus servicios', ih:true,
+   desc:'Terapia ocupacional, integración sensorial, pedagogía curativa, trastornos de aprendizaje e inquietud motriz.',
+   contactos:[{n:'María Liliana Cepeda Cortés', e:'malice28@hotmail.com', t:'3108618636'}]},
+  {p:8,  nombre:'Arteadentro Inti Huasi', cat:'Salud y Bienestar', dto:10, dtoLabel:'10%', dtoDetail:'en sus servicios', ih:true,
+   desc:'Acompañamiento arteterapéutico individual y grupal a niños, niñas, jóvenes, docentes y familias, para armonizar los vínculos al interior de la familia y de la escuela.',
+   contactos:[{n:'Sofía Toro Sarmiento', e:'corajeparatransformarse@gmail.com', t:'3157839040'}]},
+  {p:9,  nombre:'La Gigi Conserva', cat:'Alimentos y Bebidas', dto:10, dtoLabel:'10%', dtoDetail:'en sus productos',
+   desc:'Conservas con productos frescos de la mejor calidad: mermeladas, untables de frutos secos y picantes en aceite de oliva. Sin conservantes artificiales ni químicos.',
+   contactos:[{n:'Lilian Cristina Salazar Ballén', e:'bileban1@gmail.com', t:'3195053641'}]},
+  {p:10, nombre:'Xima Chocolates', cat:'Alimentos y Bebidas', dto:10, dtoLabel:'10%', dtoDetail:'en sus productos',
+   desc:'Chocolate saludable con mínimo 70 % de cacao: el mayor antioxidante natural, bueno para el corazón, el colesterol y las articulaciones, y antiinflamatorio natural.',
+   contactos:[{n:'Olga Lucía Díaz', e:'olgadiaz2003@yahoo.com', t:'3132855783'}]},
+  {p:11, nombre:'Tang Yang Repostería', cat:'Alimentos y Bebidas', dto:15, dtoLabel:'15%', dtoDetail:'en sus combos de galletas',
+   desc:'Galletas 100 % artesanales estilo NYC: Red Velvet con relleno de cheesecake, chocolate con glaseado de fudge y chips con glaseado de chocolate.',
+   contactos:[{n:'Olga Marcela Beleño Gamba', e:'marcelavillareal87@gmail.com', t:'3172905929'}]},
+  {p:12, nombre:'Diente de León', cat:'Educación y Clases', dto:10, dtoLabel:'10%', dtoDetail:'en su producto del mes',
+   desc:'Tienda virtual de materiales didácticos, juguetes y libros orientados a una pedagogía sensible, creativa y respetuosa del desarrollo integral de niñas, niños y jóvenes.',
+   contactos:[{n:'Heidy Guerrero', e:'arcaliatejidos@gmail.com', t:'3004896765'}]},
+  {p:13, nombre:'Curando Espacios', cat:'Servicios Profesionales', dto:30, dtoLabel:'30%', dtoDetail:'en sus servicios',
+   desc:'Desde $45.000. Asesorías para mejorar tus espacios habitacionales, laborales y procesos comerciales (emprendimientos).',
+   contactos:[{n:'Julián Vladimir Núñez Zapata', e:'curandoespacios@gmail.com', t:'3027460970'}]},
+  {p:14, nombre:'Lacasitazul', cat:'Arte y Artesanías', dto:10, dtoLabel:'10%', dtoDetail:'en mochilas, cacao y alquiler de espacios',
+   desc:'Centro de economías propias y transiciones territoriales: café y cacao de la Sierra Nevada, mochilas arhuacas, mermelada de açaí, viche, chocatos santandereanos y más, de comunidades indígenas, negras, campesinas y mestizas.',
+   contactos:[{n:'Antonio Gómez Sánchez', e:'agomezsanchez7@gmail.com', t:'3208882859'}]},
+  {p:15, nombre:'Peku SAS', cat:'Servicios Profesionales', dto:10, dtoLabel:'10%', dtoDetail:'en sus servicios de diseño',
+   desc:'Diseño con amor: servicios de diseño y publicidad para tu marca o emprendimiento.',
+   contactos:[{n:'Luisa Fernanda Peña Cubillos', e:'pekudiseno@gmail.com', t:'3045887875'}]},
+  {p:16, nombre:'La Joya Café Especial', cat:'Alimentos y Bebidas', dto:10, dtoLabel:'10%', dtoDetail:'en sus productos',
+   desc:'Café de especialidad 100 % natural, libre de fungicidas.',
+   contactos:[{n:'Reinel Chacón Arce', e:'rchaconarce@gmail.com', t:'3115909744'}]},
+  {p:17, nombre:'Moorea Natural', cat:'Salud y Bienestar', dto:10, dtoLabel:'10%', dtoDetail:'en sus productos',
+   desc:'Productos naturales para la salud y la belleza: aceites esenciales y terapéuticos, bombas efervescentes, jabones, kits de regalo, splash, ungüentos y velas para masaje.',
+   contactos:[{n:'Martha Patricia Velandia León', e:'mooreanatural@gmail.com', t:'3115455165'}]},
+  {p:18, nombre:'El Mundo de Kiki', cat:'Arte y Artesanías', dto:10, dtoLabel:'6–10%', dtoDetail:'en productos seleccionados',
+   desc:'Pequeños tesoros mágicos para almas curiosas: joyas y creaciones hechas a mano, llenas de color, fantasía y protección. Elige la tuya o crea una pieza única por encargo.',
+   contactos:[{n:'Jina Vesga', e:'Florabali597@gmail.com', t:'3137024129'}]},
+  {p:19, nombre:'Esencia Viva', cat:'Salud y Bienestar', dto:8, dtoLabel:'5–8%', dtoDetail:'5% por un producto · 8% por dos productos',
+   desc:'By Sandra Fernández, coach. Productos naturales hechos a mano, creados con amor, intención y conexión, para acompañarte en tus momentos de pausa, de calma y de regreso a ti.',
+   contactos:[{n:'Sandra Patricia Fernández Tovar', e:'sandrapatricia30@gmail.com', t:'3134524173'}]},
+  {p:20, nombre:'Dra. Merci Blanco · Servicios de Salud', cat:'Salud y Bienestar', dto:0, dtoLabel:'Aliado', dtoDetail:'beneficio para portadores de la tarjeta',
+   desc:'Servicios médicos holísticos orientados a manejar el dolor: medicina integrativa, consulta médica, terapias para el dolor y productos naturales.',
+   contactos:[{n:'Merci Blanco Bocachica', e:'drmbb40@gmail.com', t:'3118619994'}]},
+  {p:21, nombre:'Compañía de Bienestar', cat:'Salud y Bienestar', dto:10, dtoLabel:'10%', dtoDetail:'en sus productos',
+   desc:'Con Amway, consumir con propósito: calidad que nutre, bienestar que transforma, ahorro que construye y acciones que protegen nuestro planeta.',
+   contactos:[{n:'Carmen Rosa Laverde Díaz', e:'gorgyrose@hotmail.com', t:'3177992074'},
+              {n:'Sandra Patricia Rendón Ramírez', e:'patico90210@gmail.com', t:'3213184564'}]},
+  {p:22, nombre:'Aura Alicia Arias · Riesgos Laborales', cat:'Servicios Profesionales', dto:10, dtoLabel:'10%', dtoDetail:'en sus servicios',
+   desc:'Gestión integral de riesgos laborales (SG-SST): consultoría que crea cultura de seguridad, reduce accidentalidad, ausentismo y costos, y alinea sus procesos con las normativas vigentes.',
+   contactos:[{n:'Aura Alicia Arias Pinzón', e:'auraalicia@yahoo.com', t:'3174337638'}]},
+  {p:23, nombre:'C.M. English Services', cat:'Educación y Clases', dto:100, dtoLabel:'100%', dtoDetail:'en la primera clase',
+   desc:'Clases de inglés, preparación para exámenes y asesorías académicas y profesionales relacionadas con el inglés para el estudio y el trabajo. Solo adultos · clases virtuales.',
+   contactos:[{n:'Claudia Marcela Palacio Rincón', e:'clamarci@gmial.com', t:'3164766276'}]},
+  {p:24, nombre:'Nimairá · Turismo Sostenible', cat:'Turismo', dto:8, dtoLabel:'8%', dtoDetail:'en sus productos y servicios',
+   desc:'Café de calidad superior y turismo cafetero en la finca La Pradera, Tibacuy, Cundinamarca.',
+   contactos:[{n:'Luz Adriana Palacio Rincón', e:'fincalapraderacol@gmail.com', t:'3143394463'}]},
+  {p:25, nombre:'Ciclos y Acuerdos', cat:'Servicios Profesionales', dto:4, dtoLabel:'4%', dtoDetail:'en sus servicios',
+   desc:'Más de 20 años en resolución de conflictos: consultorías en Derecho Privado, divorcios y sucesiones de mutuo acuerdo, compraventa de inmuebles y saneamiento de la propiedad ante el IGAC.',
+   contactos:[{n:'Lina Beatriz Torres Silva', e:'asesoriasjuridicaslinabtorress@gmail.com', t:'3153018205'}]},
+  {p:26, nombre:'Música para Medios · Mercurio', cat:'Música y Eventos', dto:20, dtoLabel:'20%', dtoDetail:'en sus servicios',
+   desc:'Musicalización profesional para audiovisuales: películas, cortometrajes, comerciales, podcasts y videojuegos. Clases particulares de teoría musical y producción de música y sonido (virtual).',
+   contactos:[{n:'Iago Campus Palacio', e:'iagocamp9@gmail.com', t:'3157268116'}]},
+  {p:27, nombre:'Goth Cat', cat:'Arte y Artesanías', dto:10, dtoLabel:'10%', dtoDetail:'en sus productos',
+   desc:'Camisetas con diseños originales hechos a mano.',
+   contactos:[{n:'Daniel Alfonso García Durán', e:'danielcat789@gmail.com', t:'3202262296'}]},
+  {p:28, nombre:'Los Decores de Ony', cat:'Arte y Artesanías', dto:10, dtoLabel:'10%', dtoDetail:'en sus productos',
+   desc:'Manualidades y detalles elaborados a mano con material natural y orgánico, y mucho más.',
+   contactos:[{n:'Onaira Paternina Montalvo', e:'onipater@gmail.ocm', t:'3118238825'}]},
+  {p:29, nombre:'Las Típicas de Marlen', cat:'Alimentos y Bebidas', dto:5, dtoLabel:'5%', dtoDetail:'en sus productos',
+   desc:'El sabor de la tradición colombiana: envueltos de maíz y arroz, arepas rellenas, de maíz peto y yuca, y empanadas crocantes de carne, pollo y vegetarianas. Recetas 100 % naturales, sin conservantes.',
+   contactos:[{n:'Marlen Ballén', e:'Ballenmarlen001@gmail.com', t:'3214161838'}]},
+  {p:30, nombre:'Morales Music Show', cat:'Música y Eventos', dto:20, dtoLabel:'20%', dtoDetail:'en una hora de servicio',
+   desc:'Música en vivo para eventos familiares, empresariales y corporativos: todos los géneros, serenatas, backline, sonido y artistas profesionales.',
+   contactos:[{n:'Hernando Morales Reyes', e:'Moralesnano03@gmail.com', t:'3114927840'}]},
+  {p:31, nombre:'Orgánicos y Saludables', cat:'Alimentos y Bebidas', dto:5, dtoLabel:'5%', dtoDetail:'en sus productos',
+   desc:'Venta de productos saludables de cuidado personal y alimentos.',
+   contactos:[{n:'Sandra Bernate', e:'alimentos@organicosysaludables.com', t:'3213871589'}]},
+  {p:32, nombre:'Casa Holística de la Medicina', cat:'Salud y Bienestar', dto:30, dtoLabel:'30%', dtoDetail:'en la primera consulta',
+   desc:'Masajes terapéuticos, remedios de plantas y tratamientos naturales.',
+   contactos:[{n:'Natalia María Ciódaro Correa', e:'casaholisticadelamedicina@gmail.com', t:'3203585065'}]},
+  {p:33, nombre:'Marcela Prieto · Doula', cat:'Salud y Bienestar', dto:10, dtoLabel:'10%', dtoDetail:'en sus servicios',
+   desc:'Acompañamiento como doula y asesora de lactancia en procesos de gestación, parto y posparto.',
+   contactos:[{n:'Jenny Marcela Prieto Suárez', e:'Jmarcelaprietos@gmail.com', t:'3118033753'}]},
+  {p:34, nombre:'Productos Orgánicos Wandra', cat:'Alimentos y Bebidas', dto:20, dtoLabel:'20%', dtoDetail:'en sus productos',
+   desc:'Especias, condimentos y miel cruda, cultivados sin químicos de síntesis, regados con agua lluvia y secados al sol. Cada compra apoya la conservación de los recursos naturales del Vichada.',
+   contactos:[{n:'Uriel Humberto Contreras Niño', e:'ucontrerasser@gmail.com', t:'3124404217'}]},
+  {p:35, nombre:'Vitaesophia', cat:'Salud y Bienestar', dto:5, dtoLabel:'5%', dtoDetail:'en sus productos',
+   desc:'Farmacia: productos para la salud y el bienestar.',
+   contactos:[{n:'Andrés Acosta', e:'farmacia@vitaesophia.com', t:'3002114268'}]},
+  {p:36, nombre:'Inglés Vivencial: Arte, Teatro y Movimiento', cat:'Educación y Clases', dto:10, dtoLabel:'10%', dtoDetail:'en sus clases',
+   desc:'Los niños aprenden y viven el inglés de manera orgánica y creativa, con pedagogía Waldorf: arte dramático, poesía, juego de roles y movimiento. Grupos de 6 a 8 y de 9 a 10 años.',
+   contactos:[{n:'Inglés Vivencial', e:'vijaynavan@gmail.com', t:''}]},
+  {p:37, nombre:'Biosynergic', cat:'Salud y Bienestar', dto:5, dtoLabel:'5%', dtoDetail:'en sus productos',
+   desc:'Alimentos nutricionales en polvo de última generación para el bienestar metabólico, eléctrico y cognitivo: Bio om+, Mgk+Pro y Elektrolim+.',
+   contactos:[{n:'Juan Montoya · Katherine Calderón', e:'biosynergic@hotmail.com', t:'3059079337'}]},
+];
+
+const CATS = ['Todos', ...[...new Set(OFERTAS.map(o=>o.cat))]];
+let state = { cat:'Todos', q:'', sort:'dto-desc' };
+let visibles = [];
+
+const $ = s => document.querySelector(s);
+const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+const ICON_MAIL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>';
+const ICON_WA = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2Zm5.2 13.8c-.2.6-1.2 1.2-1.7 1.2-.4.1-1 .1-1.6-.1a13 13 0 0 1-1.5-.5c-2.6-1.1-4.3-3.7-4.4-3.9-.1-.2-1-1.4-1-2.7s.6-1.9.9-2.2c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.4l.9 2.1c.1.2.1.4 0 .6l-.4.6-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.7-.1l1-1.2c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.5.3.1.1.1.7-.1 1.2Z"/></svg>';
+const ICON_SUN = '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+
+function contactoHTML(c){
+  const links = [];
+  if (c.e) links.push(`<a class="c-link" href="mailto:${esc(c.e)}" title="${esc(c.e)}">${ICON_MAIL}<span>${esc(c.e)}</span></a>`);
+  if (c.t) links.push(`<a class="c-link wa" href="https://wa.me/57${c.t}" target="_blank" rel="noopener" title="WhatsApp ${esc(c.t)}">${ICON_WA}<span>${esc(c.t)}</span></a>`);
+  return `<div><div class="contacto-nombre">${esc(c.n)}</div><div class="contacto-links">${links.join('')}</div></div>`;
+}
+
+function cardHTML(o, i){
+  return `
+  <article class="card" data-i="${i}">
+    <div class="card-img" data-open="${i}" role="button" tabindex="0" aria-label="Ver ${esc(o.nombre)} en el catálogo">
+      <img src="${pageImg(o.p)}" alt="Página del catálogo: ${esc(o.nombre)}" loading="lazy"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="fallback">${esc(o.nombre.charAt(0))}</div>
+      <div class="badge-dto"><span class="pct">${esc(o.dtoLabel)}</span><span class="lbl">${o.dto>0?'dto.':'ver'}</span></div>
+      ${o.ih?`<div class="badge-ih">${ICON_SUN} Inti Huasi</div>`:''}
+    </div>
+    <div class="card-body">
+      <span class="card-cat">${esc(o.cat)}</span>
+      <h3>${esc(o.nombre)}</h3>
+      <div class="dto-line">${o.dto>0?esc(o.dtoLabel)+' de descuento ':''}${esc(o.dtoDetail)}</div>
+      <p class="desc">${esc(o.desc)}</p>
+      <button class="ver-mas" data-toggle>Ver más</button>
+      <div class="contactos">${o.contactos.map(contactoHTML).join('')}</div>
+    </div>
+    <div class="card-foot">
+      <button class="btn-catalogo" data-open="${i}">Ver página del catálogo ☀</button>
+    </div>
+  </article>`;
+}
+
+function aplica(){
+  const q = state.q.trim().toLowerCase();
+  visibles = OFERTAS.filter(o =>
+    (state.cat==='Todos' || o.cat===state.cat) &&
+    (!q || (o.nombre+' '+o.desc+' '+o.cat+' '+o.dtoDetail+' '+o.contactos.map(c=>c.n).join(' ')).toLowerCase().includes(q))
+  );
+  const s = state.sort;
+  if (s==='dto-desc') visibles.sort((a,b)=>b.dto-a.dto || a.nombre.localeCompare(b.nombre,'es'));
+  else if (s==='dto-asc') visibles.sort((a,b)=>a.dto-b.dto || a.nombre.localeCompare(b.nombre,'es'));
+  else if (s==='nombre-asc') visibles.sort((a,b)=>a.nombre.localeCompare(b.nombre,'es'));
+  else if (s==='nombre-desc') visibles.sort((a,b)=>b.nombre.localeCompare(a.nombre,'es'));
+  else visibles.sort((a,b)=>a.p-b.p);
+
+  $('#grid').innerHTML = visibles.map(cardHTML).join('');
+  $('#empty').hidden = visibles.length>0;
+  $('#count').textContent = visibles.length===OFERTAS.length
+    ? `${OFERTAS.length} beneficios`
+    : `${visibles.length} de ${OFERTAS.length} beneficios`;
+}
+
+function pintaCats(){
+  $('#cats').innerHTML = CATS.map(c=>{
+    const n = c==='Todos' ? OFERTAS.length : OFERTAS.filter(o=>o.cat===c).length;
+    return `<button class="cat-btn${state.cat===c?' active':''}" data-cat="${esc(c)}">${esc(c)}<span class="n">${n}</span></button>`;
+  }).join('');
+}
+
+/* ---------- Modal ---------- */
+let modalIdx = 0;
+function abreModal(i){
+  modalIdx = i;
+  const o = visibles[i];
+  if (!o) return;
+  $('#modalImg').src = pageImg(o.p);
+  $('#modalImg').alt = 'Página del catálogo: ' + o.nombre;
+  $('#modalCap').textContent = `${o.nombre} — ${o.dtoLabel} ${o.dtoDetail}`;
+  $('#modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function cierraModal(){
+  $('#modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function navega(d){
+  if (!visibles.length) return;
+  abreModal((modalIdx + d + visibles.length) % visibles.length);
+}
+
+/* ---------- Eventos ---------- */
+$('#cats').addEventListener('click', e=>{
+  const b = e.target.closest('[data-cat]');
+  if (!b) return;
+  state.cat = b.dataset.cat;
+  pintaCats(); aplica();
+});
+$('#search').addEventListener('input', e=>{ state.q = e.target.value; aplica(); });
+$('#sort').addEventListener('change', e=>{ state.sort = e.target.value; aplica(); });
+$('#grid').addEventListener('click', e=>{
+  const t = e.target.closest('[data-toggle]');
+  if (t){
+    const d = t.parentElement.querySelector('.desc');
+    d.classList.toggle('open');
+    t.textContent = d.classList.contains('open') ? 'Ver menos' : 'Ver más';
+    return;
+  }
+  const o = e.target.closest('[data-open]');
+  if (o) abreModal(Number(o.dataset.open));
+});
+$('#grid').addEventListener('keydown', e=>{
+  if (e.key==='Enter' && e.target.matches('.card-img')) abreModal(Number(e.target.dataset.open));
+});
+$('#modalClose').addEventListener('click', cierraModal);
+$('#modalPrev').addEventListener('click', ()=>navega(-1));
+$('#modalNext').addEventListener('click', ()=>navega(1));
+$('#modal').addEventListener('click', e=>{ if (e.target===e.currentTarget) cierraModal(); });
+document.addEventListener('keydown', e=>{
+  if (!$('#modal').classList.contains('open')) return;
+  if (e.key==='Escape') cierraModal();
+  if (e.key==='ArrowLeft') navega(-1);
+  if (e.key==='ArrowRight') navega(1);
+});
+
+pintaCats();
+aplica();
+</script>
+</body>
+</html>
